@@ -3,22 +3,20 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		330C109B2469A4B5008BD619 /* Functional.swift in Sources */ = {isa = PBXBuildFile; fileRef = 330C109A2469A4B5008BD619 /* Functional.swift */; };
 		33527ACE24731C5A002F7274 /* EventItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33527ACD24731C5A002F7274 /* EventItem.swift */; };
 		33B68F652472FDAD006802C0 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5D2472D9C4006802C0 /* Kingfisher.framework */; };
-		33B68F662472FDAD006802C0 /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5D2472D9C4006802C0 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		33B68F662472FDAD006802C0 /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5D2472D9C4006802C0 /* Kingfisher.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		33B68F672472FDAD006802C0 /* Overture.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5E2472D9C4006802C0 /* Overture.framework */; };
-		33B68F682472FDAD006802C0 /* Overture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5E2472D9C4006802C0 /* Overture.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		33B68F772472FDAD006802C0 /* Stevia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F6D2472FDAD006802C0 /* Stevia.framework */; };
-		33B68F782472FDAD006802C0 /* Stevia.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F6D2472FDAD006802C0 /* Stevia.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		33B68F682472FDAD006802C0 /* Overture.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F5E2472D9C4006802C0 /* Overture.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		33B68F792472FDAD006802C0 /* KeychainAccess.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F6E2472FDAD006802C0 /* KeychainAccess.framework */; };
-		33B68F7A2472FDAD006802C0 /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F6E2472FDAD006802C0 /* KeychainAccess.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		33B68F7A2472FDAD006802C0 /* KeychainAccess.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F6E2472FDAD006802C0 /* KeychainAccess.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		33B68F7D2472FDAE006802C0 /* Networking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F702472FDAD006802C0 /* Networking.framework */; };
-		33B68F7E2472FDAE006802C0 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F702472FDAD006802C0 /* Networking.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		33B68F7E2472FDAE006802C0 /* Networking.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 33B68F702472FDAD006802C0 /* Networking.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		33B68F812473039F006802C0 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B68F802473039F006802C0 /* MainViewController.swift */; };
 		33B68F8324730503006802C0 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B68F8224730503006802C0 /* BaseViewController.swift */; };
 		33B68F8524730613006802C0 /* AuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33B68F8424730613006802C0 /* AuthView.swift */; };
@@ -39,7 +37,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				33B68F782472FDAD006802C0 /* Stevia.framework in Embed Frameworks */,
 				33B68F7A2472FDAD006802C0 /* KeychainAccess.framework in Embed Frameworks */,
 				33B68F7E2472FDAE006802C0 /* Networking.framework in Embed Frameworks */,
 				33B68F682472FDAD006802C0 /* Overture.framework in Embed Frameworks */,
@@ -53,6 +50,8 @@
 /* Begin PBXFileReference section */
 		330C109A2469A4B5008BD619 /* Functional.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functional.swift; sourceTree = "<group>"; };
 		33527ACD24731C5A002F7274 /* EventItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventItem.swift; sourceTree = "<group>"; };
+		33527AD024732517002F7274 /* inputFrameworks.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = inputFrameworks.xcfilelist; sourceTree = "<group>"; };
+		33527AD124732517002F7274 /* outputFrameworks.xcfilelist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcfilelist; path = outputFrameworks.xcfilelist; sourceTree = "<group>"; };
 		33B68F5D2472D9C4006802C0 /* Kingfisher.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Kingfisher.framework; path = Carthage/Build/iOS/Kingfisher.framework; sourceTree = "<group>"; };
 		33B68F5E2472D9C4006802C0 /* Overture.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Overture.framework; path = Carthage/Build/iOS/Overture.framework; sourceTree = "<group>"; };
 		33B68F6A2472FDAD006802C0 /* PINRemoteImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PINRemoteImage.framework; path = Carthage/Build/iOS/PINRemoteImage.framework; sourceTree = "<group>"; };
@@ -82,7 +81,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33B68F772472FDAD006802C0 /* Stevia.framework in Frameworks */,
 				33B68F792472FDAD006802C0 /* KeychainAccess.framework in Frameworks */,
 				33B68F7D2472FDAE006802C0 /* Networking.framework in Frameworks */,
 				33B68F672472FDAD006802C0 /* Overture.framework in Frameworks */,
@@ -139,6 +137,8 @@
 		CE1AEF0F24606778006DC7C5 = {
 			isa = PBXGroup;
 			children = (
+				33527AD024732517002F7274 /* inputFrameworks.xcfilelist */,
+				33527AD124732517002F7274 /* outputFrameworks.xcfilelist */,
 				CE1AEF1A24606778006DC7C5 /* Events */,
 				CE1AEF1924606778006DC7C5 /* Products */,
 				33B68F5C2472D9C4006802C0 /* Frameworks */,
@@ -190,6 +190,7 @@
 				CE1AEF1524606778006DC7C5 /* Frameworks */,
 				CE1AEF1624606778006DC7C5 /* Resources */,
 				33B68F692472FDAD006802C0 /* Embed Frameworks */,
+				33527ACF2473235E002F7274 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -245,6 +246,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		33527ACF2473235E002F7274 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"$(SRCROOT)/inputFrameworks.xcfilelist",
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		CE1AEF1424606778006DC7C5 /* Sources */ = {
