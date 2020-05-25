@@ -14,7 +14,7 @@ public class CornerView<T: UIView>: UIView {
     private var leftContraint: NSLayoutConstraint!
     private var rightContraint: NSLayoutConstraint!
     
-    public init(_ view: T, verticalSpacing: CGFloat) {
+    public init(_ view: T, verticalSpacing: CGFloat = 0 ) {
         self.corneredView = view
         super.init(frame: .zero)
         

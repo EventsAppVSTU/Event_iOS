@@ -8,23 +8,26 @@
 
 import UIKit
 
-
-fileprivate enum EventTableSections: CaseIterable {
-	case main
-}
-
 public class EventViewController: UITableViewController {
 
-	private var dataSource: UITableViewDiffableDataSource<EventTableSections, EventItem>!
-	
-    public override func viewDidLoad() {
-        super.viewDidLoad()
+	public required init() {
+		super.init(nibName: nil, bundle: nil)
 		
 		tabBarItem = UITabBarItem(title: "Events",
 								  image: UIImage(systemName: "square.and.arrow.down"),
 								  selectedImage: nil)
 		
 		navigationItem.title = "Today"
+	}
+	
+	public required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+	
+	private var dataSource: UITableViewDiffableDataSource<OnceSection, EventItem>!
+	
+    public override func viewDidLoad() {
+        super.viewDidLoad()
 		
 		tableView.register(EventTableViewCell.self, forCellReuseIdentifier: "cell")
 		
@@ -40,7 +43,7 @@ public class EventViewController: UITableViewController {
 			return cell
 		}
 		
-		var snapshot = NSDiffableDataSourceSnapshot<EventTableSections, EventItem>()
+		var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventItem>()
 		snapshot.appendSections([.main])
 		snapshot.appendItems([
 			EventItem(titleText: "Кремль и кококкоронавирус",
