@@ -17,7 +17,9 @@ class MainViewController: UITabBarController {
 		eventNavigationController.navigationBar.prefersLargeTitles = true
 		navigationItem.largeTitleDisplayMode = .always
 		
-        viewControllers = [eventNavigationController]
+		let settingsVc = SettingsViewController()
+		
+        viewControllers = [eventNavigationController, settingsVc]
 		
 		tabBar.tintColor = .systemRed
     }
