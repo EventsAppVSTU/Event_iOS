@@ -12,19 +12,26 @@ import Combine
 
 
 public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
+	
+	@Published var loginValue = ""
+	@Published var passwordValue = ""
+	
+	let loginTapSubject = PassthroughSubject<Void, Never>()
+	
 	public override func bind(output: Flow.Output) {
 		output.serverMessages
-		.sink {
-			print($0)
-		}
-		.store(in: &self.store)
+			.receive(on: DispatchQueue.main)
+			.sink {
+				print($0)
+			}
+			.store(in: &self.store)
 	}
 
 	public override var input: Flow.Input {
 		Flow.Input(
-			email: contentView.loginField.corneredView.textPublisher.map { $0 == nil ? "" : $0! }.eraseToAnyPublisher(),
-			password: contentView.passField.corneredView.textPublisher.map { $0 == nil ? "" : $0! }.eraseToAnyPublisher(),
-			loginButton: contentView.loginBtn.corneredView.tapPublisher
+			email: $loginValue.eraseToAnyPublisher(),
+			password: $passwordValue.eraseToAnyPublisher(),
+			loginButton: loginTapSubject.eraseToAnyPublisher()
 		)
 	}
 	
@@ -35,13 +42,29 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 		
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
 		contentView.addGestureRecognizer(tapGesture)
-		contentView.loginBtn.corneredView.addTarget(self, action: #selector(navigateToEvent), for: .touchUpInside)
+		
+		contentView.loginBtn.corneredView.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
+		contentView.loginField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
+		contentView.passField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
     }
 	
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
 	
-	@objc func navigateToEvent() {}
+	@objc func textFieldValueChanged(_ sender: UITextField) {
+		if sender == contentView.loginField.corneredView {
+			loginValue = sender.text ?? ""
+		}
+		else if sender == contentView.passField.corneredView {
+			passwordValue = sender.text ?? ""
+		}
+	}
+	
+	@objc func loginButtonTap(_ sender: UIControl) {
+		loginTapSubject.send()
+	}
 }
+
+
 

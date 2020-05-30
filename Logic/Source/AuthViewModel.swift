@@ -11,9 +11,17 @@ import Combine
 import Views
 
 public class AuthViewModel: BaseViewModel<AuthFlow> {
+	
+	let globalContext: GlobalContext
+	
 	struct Credential {
 		let email: String
 		let password: String
+	}
+	
+	public init(globalContext: GlobalContext) {
+		self.globalContext = globalContext
+		super.init()
 	}
 	
 	private var serverResponse = PassthroughSubject<Complete<String>, Never>()

@@ -10,11 +10,11 @@ import UIKit
 
 open class ContentViewController<View: UIView>: UIViewController {
 	
+	public private(set) var contentView: View!
+	
     open private(set) var viewLoader: () -> View = {
         return View()
     }
-	
-	public private(set) var contentView: View!
 	
 	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)

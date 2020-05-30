@@ -15,6 +15,9 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 	public typealias Input = Flow.Input
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow
+
+    public var store = Set<AnyCancellable>()
+	public let viewModel: BaseViewModel<Flow>
 	
 	open var input: Flow.Input {
 		fatalError()
@@ -23,13 +26,7 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 	open func bind(output: Flow.Output) {
 		fatalError()
 	}
-
 	
-    public var store = Set<AnyCancellable>()
-	
-	public let viewModel: BaseViewModel<Flow>
-
-    // MARK: Init
     public init(_ viewModel: BaseViewModel<Flow>) {
         self.viewModel = viewModel
         super.init()

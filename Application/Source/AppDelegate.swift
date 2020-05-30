@@ -24,12 +24,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?)
 		-> Bool
 	{
-		let viewModel = AuthViewModel()
-		let vc = AuthViewController(viewModel)
-		
-		globalNavigationController = UINavigationController(rootViewController: vc)
+		globalNavigationController = UINavigationController()
 		globalNavigationController.setNavigationBarHidden(true, animated: false)
 		globalNavigationController.navigationBar.prefersLargeTitles = true
+		
+		let globalContext = GlobalContext(
+			globalNavigationController: globalNavigationController
+		)
+		
+		let viewModel = AuthViewModel(globalContext: globalContext)
+		let vc = AuthViewController(viewModel)
+		globalNavigationController.viewControllers = [vc]
         
 		let window = UIWindow()
         window.rootViewController = globalNavigationController
