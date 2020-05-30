@@ -1,0 +1,91 @@
+include: project-template.yml
+
+name: Events
+
+options:
+  bundleIdPrefix: com.skw883halhag2.kh82hk
+  deploymentTarget:
+    iOS: "13.0"
+  transitivelyLinkDependencies: true
+  developmentLanguage: en
+  createIntermediateGroups: true
+
+settings:
+  SWIFT_VERSION: "5.1.2"
+
+targets:
+  Application:
+    # directlyEmbedCarthageDependencies: true
+    templates: [Application]
+    sources: 
+      - path: Application/Source
+        type: Folder
+      - path: Application/Resource
+        excludes:
+          - Info.plist
+        type: Folder
+    info:
+      path: Application/Resource/Info.plist
+      properties:
+        CFBundleDisplayName: Events
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        UILaunchStoryboardName: LaunchScreen
+    settings:
+      base:
+        CODE_SIGN_STYLE: Manual
+        DEVELOPMENT_TEAM: N3394Z6629
+        CODE_SIGN_IDENTITY: iPhone Developer
+        PROVISIONING_PROFILE_SPECIFIER: 
+        TARGET_PATH: Application
+        TARGETED_DEVICE_FAMILY: 1
+
+    dependencies:
+      - target: Library
+      - target: Logic
+      - target: Views
+      - carthage: Kingfisher
+      - carthage: Overture
+      - carthage: KeychainAccess
+      - carthage: Networking
+
+  Library:
+    templates: [Framework]
+    info:
+      path: Library/Resource/Info.plist
+    settings: 
+      base: 
+        TARGET_PATH: Library
+    sources: Library/Source
+    dependencies: 
+      - carthage: Kingfisher
+      - carthage: Overture
+      - carthage: KeychainAccess
+      - carthage: Networking
+
+  Logic:
+    templates: [Framework]
+    info:
+      path: Logic/Resource/Info.plist
+    settings: 
+      base: 
+        TARGET_PATH: Logic
+    sources: Logic/Source
+    dependencies: 
+      - carthage: Kingfisher
+      - carthage: Overture
+      - carthage: KeychainAccess
+      - carthage: Networking
+      - target: Library
+      - target: Views
+
+  Views:
+    templates: [Framework]
+    info:
+      path: Views/Resource/Info.plist
+    settings: 
+      base: 
+        TARGET_PATH: Views
+    sources: Views/Source
+    dependencies: 
+      - target: Library
+      - carthage: Overture
