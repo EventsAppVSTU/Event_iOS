@@ -16,7 +16,8 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow
 
-    public var store = Set<AnyCancellable>()
+	public let didLoadPublisher = PassthroughSubject<Void, Never>()
+    public var bag = Set<AnyCancellable>()
 	public let viewModel: BaseViewModel<Flow>
 	
 	open var input: Flow.Input {
@@ -27,12 +28,33 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 		fatalError()
 	}
 	
-    public init(_ viewModel: BaseViewModel<Flow>) {
+	open override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		didLoad()
+		bind(output: viewModel.transform(input: self.input, bag: &bag))
+		didLoadPublisher.send()
+	}
+	
+	open func didLoad() {}
+	
+    public init(viewModel: BaseViewModel<Flow>) {
         self.viewModel = viewModel
+		
         super.init()
+		
+		afterInit()
     }
+	
+	open func afterInit() {}
 	
 	public required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+}
+
+public extension BaseViewController where View: UITableView {
+	var tableView: View! {
+		return view as? View
 	}
 }

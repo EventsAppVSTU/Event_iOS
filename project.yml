@@ -43,6 +43,7 @@ targets:
       - target: Library
       - target: Logic
       - target: Views
+      - target: Flow
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
@@ -77,6 +78,7 @@ targets:
       - carthage: Networking
       - target: Library
       - target: Views
+      - target: Flow
 
   Views:
     templates: [Framework]
@@ -88,4 +90,16 @@ targets:
     sources: Views/Source
     dependencies: 
       - target: Library
+      - target: Flow
       - carthage: Overture
+
+  Flow:
+    templates: [Framework]
+    info:
+      path: Flow/Resource/Info.plist
+    settings: 
+      base: 
+        TARGET_PATH: Flow
+    sources: Flow/Source
+    dependencies: 
+      - target: Library

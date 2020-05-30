@@ -7,29 +7,47 @@
 //
 
 import UIKit
+import Library
+import Flow
 
-public class EventViewController: UITableViewController {
+public class EventsListViewController: BaseViewController<UITableView, EventsListFlow> {
 
-	public required init() {
-		super.init(nibName: nil, bundle: nil)
-		
-		tabBarItem = UITabBarItem(title: "Events",
-								  image: UIImage(systemName: "square.and.arrow.down"),
-								  selectedImage: nil)
+	private var dataSource: UITableViewDiffableDataSource<OnceSection, EventsListFlow.CellItem>!
+	
+	public override func afterInit() {
+		tabBarItem = UITabBarItem(
+			title: "Events",
+			image: UIImage(systemName: "square.and.arrow.down"),
+			selectedImage: nil
+		)
 		
 		navigationItem.title = "Today"
 	}
 	
-	public required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
+	public override var input: Empty {
+		return .empty
 	}
 	
-	private var dataSource: UITableViewDiffableDataSource<OnceSection, EventItem>!
+	public override func bind(output: EventsListFlow.Output) {
+		output.listData
+			.combineLatest(didLoadPublisher) { (list, _) in list }
+			.map { listData ->  NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem> in
+				var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem>()
+				snapshot.appendSections([.main])
+				snapshot.appendItems(listData)
+				return snapshot
+			}
+			.sink(receiveValue: unowned(dataSource) {
+				
+				$0.apply($1)
+			})
+			.store(in: &bag)
+	}
 	
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-		
+	public override func didLoad() {
 		tableView.register(EventTableViewCell.self, forCellReuseIdentifier: "cell")
+		
+		tableView.automaticallyAdjustsScrollIndicatorInsets = true
 		
 		dataSource = .init(tableView: tableView)
 		{ (tv, ip, item) -> UITableViewCell? in
@@ -42,25 +60,26 @@ public class EventViewController: UITableViewController {
 			
 			return cell
 		}
-		
-		var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventItem>()
-		snapshot.appendSections([.main])
-		snapshot.appendItems([
-			EventItem(titleText: "Кремль и кококкоронавирус",
-					  descriptionText: "Вчера провели конференцию в сарае с лидерами общественного мнения среди сообщества WAG и обсудили актуальные проблемы общества: кризис малого производства пивных напитков и мехатроников для DSG",
-					  date: "Вроде вчера это было",
-					  image: UIImage(named: "kremlin")
-			)
-		])
-		dataSource.apply(snapshot)
-    }
+	} 
 	
-	public override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-	}
-	
-	public override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//    public override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//
+//
+//
+//		var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventUiItem>()
+//		snapshot.appendSections([.main])
+//		snapshot.appendItems([
+
+//		])
+//		dataSource.apply(snapshot)
+//    }
+}
+
+
+extension EventsListViewController: UITableViewDelegate {
+	public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
 		return UITableView.automaticDimension
 	}
-
 }

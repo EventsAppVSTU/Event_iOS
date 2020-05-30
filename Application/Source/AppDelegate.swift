@@ -33,7 +33,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		)
 		
 		let viewModel = AuthViewModel(globalContext: globalContext)
-		let vc = AuthViewController(viewModel)
+		let vc = AuthViewController(viewModel: viewModel)
 		globalNavigationController.viewControllers = [vc]
         
 		let window = UIWindow()

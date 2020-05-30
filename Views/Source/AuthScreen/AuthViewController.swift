@@ -9,7 +9,7 @@
 import UIKit
 import Library
 import Combine
-
+import Flow
 
 public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	
@@ -24,7 +24,7 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 			.sink {
 				print($0)
 			}
-			.store(in: &self.store)
+			.store(in: &self.bag)
 	}
 
 	public override var input: Flow.Input {
@@ -35,18 +35,14 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 		)
 	}
 	
-    public override func viewDidLoad() {
-        super.viewDidLoad()
-		
-		bind(output: viewModel.transform(input: self.input, bag: &store))
-		
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+	public override func didLoad() {
+		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
 		contentView.addGestureRecognizer(tapGesture)
 		
 		contentView.loginBtn.corneredView.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
 		contentView.loginField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
 		contentView.passField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
-    }
+	}
 	
     @objc func hideKeyboard() {
         view.endEditing(true)

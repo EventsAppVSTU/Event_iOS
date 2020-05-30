@@ -16,15 +16,12 @@ public enum Image: Hashable {
 	case system(name: String)
 }
 
-
 public extension UIImageView {
 	func set(image: Image?, options:KingfisherOptionsInfo? = nil) {
 		kf.cancelDownloadTask()
+		self.image = nil
 		
-		guard let image = image else {
-			self.image = nil
-			return
-		}
+		guard let image = image else { return }
 		
 
 		switch image {

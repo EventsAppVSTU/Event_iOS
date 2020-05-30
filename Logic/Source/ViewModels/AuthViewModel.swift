@@ -9,6 +9,7 @@
 import Library
 import Combine
 import Views
+import Flow
 
 public class AuthViewModel: BaseViewModel<AuthFlow> {
 	
@@ -26,15 +27,12 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 	
 	private var serverResponse = PassthroughSubject<Complete<String>, Never>()
 	
-	public override func transform(input: AuthFlow.Input, bag: inout Set<AnyCancellable>) -> AuthFlow.Output {
-		let cred = Publishers.CombineLatest(input.email, input.password)
-			.map { Credential(email: $0.0, password: $0.1) }
-		
+	public override func transform(input: AuthFlow.Input, bag: inout Set<AnyCancellable>) -> AuthFlow.Output {	
 		input.loginButton
-			.combineLatest(cred) { $1 }
-			.sink(receiveValue: unowned(serverResponse) { (instance, arg) in
-				instance.send(arg.email == arg.password ? .success : .failure(error: "SASI"))
-			})
+			.sink(receiveValue: unowned(globalContext, { (instance, _) in
+				let screen = ScreenBuilder.getMainScreen(context: instance)
+				instance.globalNavigationController.setViewControllers([screen], animated: true)
+			}))
 			.store(in: &bag)
 		
 		return AuthFlow.Output(serverMessages: serverResponse.eraseToAnyPublisher())

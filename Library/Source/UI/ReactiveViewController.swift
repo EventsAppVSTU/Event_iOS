@@ -11,6 +11,6 @@ import Combine
 
 
 public protocol CancellableContainer {
-    var store: Set<AnyCancellable> { get }
+    var bag: Set<AnyCancellable> { get }
 }
 
