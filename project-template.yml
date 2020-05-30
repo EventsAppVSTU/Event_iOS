@@ -1,0 +1,32 @@
+targetTemplates:
+  Application:
+    type: application
+    platform: iOS
+    deploymentTarget:
+      iOS: 13.0
+      base:
+        TARGETED_DEVICE_FAMILY: 1
+    scheme:
+      gatherCoverageData: true
+
+
+  SwiftLint:
+    prebuildScripts: &prebuildScripts
+      - script: |
+          mint run swiftlint swiftlint --path ${TARGET_PATH}  --config ${SRCROOT}/.swiftlint.yml
+        name: SwiftLint
+
+  
+  Framework:
+    type: framework
+    platform: iOS
+    deploymentTarget:
+      iOS: 13.0
+    base:
+        TARGETED_DEVICE_FAMILY: 1
+    scheme:
+      gatherCoverageData: true
+
+  Extension:
+    type: app-extension
+    platform: iOS
