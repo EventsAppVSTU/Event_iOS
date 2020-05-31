@@ -8,9 +8,15 @@
 
 import UIKit
 import Library
+import Combine
 
 class EventTableViewCell: UITableViewCell {
 
+	var currentIndexPath: IndexPath?
+	
+	private let descriptionTap = PassthroughSubject<IndexPath, Never>()
+	private var descriptionTapCancellable: AnyCancellable?
+	
 	let newsImageView = UIImageView()
 		|> \.layer.cornerRadius .~ 10
 		|> \.layer.masksToBounds .~ true
@@ -44,6 +50,8 @@ class EventTableViewCell: UITableViewCell {
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+		detailedScreenButton.addTarget(self, action: #selector(tapToDescription), for: .touchUpInside)
+		
 		contentView.addSubview(mainStackView)
 		mainStackView.insertArrangedSubview(newsImageView, at: 0)
 		mainStackView.insertArrangedSubview(titleLabel, at: 1)
@@ -60,10 +68,26 @@ class EventTableViewCell: UITableViewCell {
 		])
 	}
 	
+	override func prepareForReuse() {
+		currentIndexPath = nil
+		descriptionTapCancellable?.cancel()
+		descriptionTapCancellable = nil
+	}
+
+	public func connectDescriptionTap<S>(to destination: S)
+		where S: Subject, S.Output == IndexPath, S.Failure == Never
+	{
+		descriptionTapCancellable = descriptionTap.subscribe(destination)
+	}
+	
+	@objc func tapToDescription() {
+		guard let currentIndexPath = currentIndexPath else { return }
+		descriptionTap.send(currentIndexPath)
+	}
+	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
 	
     override func setSelected(_ selected: Bool, animated: Bool) {}
 	override func setHighlighted(_ highlighted: Bool, animated: Bool) {}

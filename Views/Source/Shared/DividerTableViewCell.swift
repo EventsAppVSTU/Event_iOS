@@ -23,6 +23,7 @@ final internal class DividerTableViewCell: UITableViewCell {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
 		
 		backgroundColor = .systemGroupedBackground
+		selectionStyle = .none
 		
 		contentView.translatesAutoresizingMaskIntoConstraints = false
 		contentView.heightAnchor.constraint(equalToConstant: 1).isActive = true

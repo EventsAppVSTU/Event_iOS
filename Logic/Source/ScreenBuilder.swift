@@ -11,12 +11,11 @@ import Views
 
 public class ScreenBuilder {
 	public static func getMainScreen(context: GlobalContext) -> UIViewController {
-		let settingsVc = SettingsViewController()
 		let mainViewController = UITabBarController()
 		mainViewController.navigationItem.largeTitleDisplayMode = .always
 		mainViewController.viewControllers = [
 			getEventsListScreen(context: context),
-			settingsVc
+			getSettingsScreen(context: context)
 		]
 		mainViewController.tabBar.tintColor = .systemRed
 		
@@ -31,5 +30,10 @@ public class ScreenBuilder {
 		eventNavigationController.navigationBar.prefersLargeTitles = true
 		
 		return eventNavigationController
+	}
+	
+	public static func getSettingsScreen(context: GlobalContext) -> UIViewController {
+		let viewModel = SettingsViewModel()
+		return SettingsViewController(viewModel: viewModel)
 	}
 }

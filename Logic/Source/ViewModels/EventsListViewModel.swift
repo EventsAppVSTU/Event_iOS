@@ -16,6 +16,7 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 	
 	public init(globalContext: GlobalContext) {
 		self.globalContext = globalContext
+		
 		super.init()
 	}
 	
@@ -28,7 +29,14 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 		)
 	]
 	
-	public override func transform(input: Library.Empty, bag: inout Set<AnyCancellable>) -> EventsListFlow.Output {
+	public override func transform(input: Input, bag: inout Set<AnyCancellable>) -> Output {
+		input.descriptionDidTap
+			.sink {
+				print("\(type(of: self)) \($0)")
+				UIImpactFeedbackGenerator(style: .light).impactOccurred()
+			}
+			.store(in: &bag)
+		
 		return Output(listData: $downloadedListData.eraseToAnyPublisher())
 	}
 	

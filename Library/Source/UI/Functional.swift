@@ -55,7 +55,7 @@ public func set<T: AnyObject, V>(_ kp: ReferenceWritableKeyPath<T, V>) -> (T) ->
     }
 }
 
-@inline(__always) public  func unowned<T: AnyObject, A>(_ instance: T, _ method: @escaping (T, A) -> Void) -> (A) -> Void {
+@inline(__always) public func unowned<T: AnyObject, A>(_ instance: T, _ method: @escaping (T, A) -> Void) -> (A) -> Void {
 	return { [unowned instance] arg in
 		method(instance, arg)
 	}

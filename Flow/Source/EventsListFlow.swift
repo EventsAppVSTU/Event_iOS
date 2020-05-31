@@ -30,7 +30,15 @@ public enum EventsListFlow: FlowProtocol {
 		}
 	}
 	
-	public typealias Input = Library.Empty
+	public struct Input {
+		public let descriptionDidTap: AnyPublisher<Int, Never>
+		
+		public init(
+			descriptionDidTap: AnyPublisher<Int, Never>
+		) {
+			self.descriptionDidTap = descriptionDidTap
+		}
+	}
 	
 	public struct Output {
 		public let listData: AnyPublisher<[CellItem], Never>
