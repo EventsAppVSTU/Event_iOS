@@ -10,11 +10,36 @@ import UIKit
 import Library
 
 public class NewsView: UIView {
+	
 	private var heightBannerConstraint: NSLayoutConstraint!
+	
 	let animatableBannerLayout = UILayoutGuide()
-	let tableView = UITableView()
+	
+	let rootScrollView = UIScrollView()
+		|> \.backgroundColor .~ .clear
+		|> \.alwaysBounceVertical .~ true
+	
+	let titleLabel = UILabel()
+		|> \.numberOfLines .~ 0
+		|> \.font .~ .systemFont(ofSize: 40, weight: .heavy)
+		|> \.textColor .~ .white
+		|> sideEffect { $0.drawShadow() }
+	
+	lazy var infoStackView = UIStackView(arrangedSubviews: [titleLabel])
+		|> \.axis .~ .vertical
+		|> \.spacing .~ 8
+		|> sideEffect { $0.drawShadow() }
+	
+	let contentView = NewsContentView()
+	
 	let imageView = UIImageView()
+		|> \.contentMode .~ .scaleAspectFill
+		|> \.clipsToBounds .~ true
+	
 	let navigationBar = UINavigationBar()
+		|> \.isTranslucent .~ true
+		|> sideEffect { $0.setBackgroundImage(UIImage(), for: .default) }
+		|> \.items .~ [.init(title: "Title")]
 	
 	let blurView = UIVisualEffectView(
 		effect: UIBlurEffect(style: .systemMaterial)
@@ -23,24 +48,18 @@ public class NewsView: UIView {
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
-		navigationBar.isTranslucent = true
-		navigationBar.setBackgroundImage(UIImage(), for: .default)
-		navigationBar.items = [.init(title: "HUETA")]
-		
 		backgroundColor = .systemBackground
-		imageView.image = UIImage(named: "kremlin")
-		imageView.contentMode = .scaleAspectFill
-		tableView.delegate = self
-		tableView.backgroundColor = .clear
+		rootScrollView.delegate = self
 		
-		[imageView, tableView, blurView, navigationBar].enumerated().forEach {
+		[imageView, rootScrollView, infoStackView, blurView, navigationBar].enumerated().forEach {
 			$0.element.translatesAutoresizingMaskIntoConstraints = false
 			insertSubview($0.element, at: $0.offset)
 		}
+		contentView.translatesAutoresizingMaskIntoConstraints = false
+		rootScrollView.addSubview(contentView)
 		addLayoutGuide(animatableBannerLayout)
-		
+		rootScrollView.contentInset = UIEdgeInsets(top: bannerHeight, left: 0, bottom: 0, right: 0)
 		heightBannerConstraint = animatableBannerLayout.heightAnchor.constraint(equalToConstant: bannerHeight)
-		tableView.contentInset = UIEdgeInsets(top: bannerHeight, left: 0, bottom: 0, right: 0)
 		
 		NSLayoutConstraint.activate([
 			blurView.topAnchor.constraint(equalTo: topAnchor),
@@ -62,10 +81,22 @@ public class NewsView: UIView {
 			imageView.leftAnchor.constraint(equalTo: animatableBannerLayout.leftAnchor),
 			imageView.rightAnchor.constraint(equalTo: animatableBannerLayout.rightAnchor),
 			
-			tableView.topAnchor.constraint(equalTo: topAnchor),
-			tableView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
-			tableView.leftAnchor.constraint(equalTo: safeAreaLayoutGuide.leftAnchor),
-			tableView.rightAnchor.constraint(equalTo: safeAreaLayoutGuide.rightAnchor),
+			infoStackView.bottomAnchor.constraint(equalTo: animatableBannerLayout.bottomAnchor, constant: -10),
+			infoStackView.leftAnchor.constraint(equalTo: animatableBannerLayout.leftAnchor, constant: 20),
+			infoStackView.topAnchor.constraint(greaterThanOrEqualTo: animatableBannerLayout.topAnchor),
+			infoStackView.rightAnchor.constraint(equalTo: animatableBannerLayout.rightAnchor),
+			
+			rootScrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: rootScrollView.frameLayoutGuide.widthAnchor),
+			
+			rootScrollView.contentLayoutGuide.topAnchor.constraint(equalTo: contentView.topAnchor),
+			rootScrollView.contentLayoutGuide.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+			rootScrollView.contentLayoutGuide.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+			rootScrollView.contentLayoutGuide.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+			
+			rootScrollView.topAnchor.constraint(equalTo: topAnchor),
+			rootScrollView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+			rootScrollView.leftAnchor.constraint(equalTo: leftAnchor),
+			rootScrollView.rightAnchor.constraint(equalTo: rightAnchor),
 		])
 	}
 	
@@ -74,7 +105,7 @@ public class NewsView: UIView {
 	}
 }
 
-extension NewsView: UITableViewDelegate {
+extension NewsView: UIScrollViewDelegate {
 	public func scrollViewDidScroll(_ scrollView: UIScrollView) {
 		heightBannerConstraint.constant = max(-scrollView.contentOffset.y, 0)
 		
@@ -89,11 +120,22 @@ extension NewsView: UITableViewDelegate {
 		imageView.alpha = scale
 		blurView.alpha = 1 - scale
 		navigationBar.alpha = 1 - scale
+		titleLabel.alpha = scale
 	}
 }
 
 fileprivate extension NewsView {
 	var bannerHeight: CGFloat {
-		return 300
+		return UIApplication.shared.windows.filter { $0.isKeyWindow }.first!.screen.bounds.height / 3
+	}
+}
+
+fileprivate extension UIView {
+	func drawShadow() {
+		self.layer.shadowColor = UIColor.black.cgColor
+		self.layer.shadowRadius = 3.0
+		self.layer.shadowOpacity = 1.0
+		self.layer.shadowOffset = CGSize(width: 4, height: 4)
+		self.layer.masksToBounds = false
 	}
 }

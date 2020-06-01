@@ -42,11 +42,7 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
         self.viewModel = viewModel
 		
         super.init()
-		
-		afterInit()
     }
-	
-	open func afterInit() {}
 	
 	public required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")

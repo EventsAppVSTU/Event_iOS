@@ -15,7 +15,8 @@ public class ScreenBuilder {
 		mainViewController.navigationItem.largeTitleDisplayMode = .always
 		mainViewController.viewControllers = [
 			getEventsListScreen(context: context),
-			getSettingsScreen(context: context)
+			getSettingsScreen(context: context),
+			getNewsScreen()
 		]
 		mainViewController.tabBar.tintColor = .systemRed
 		
@@ -35,5 +36,10 @@ public class ScreenBuilder {
 	public static func getSettingsScreen(context: GlobalContext) -> UIViewController {
 		let viewModel = SettingsViewModel()
 		return SettingsViewController(viewModel: viewModel)
+	}
+	
+	public static func getNewsScreen() -> UIViewController {
+		let viewModel = NewsViewModel()
+		return NewsViewController(viewModel: viewModel)
 	}
 }

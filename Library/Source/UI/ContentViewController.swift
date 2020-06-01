@@ -19,20 +19,21 @@ open class ContentViewController<View: UIView>: UIViewController {
 	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		
-		setup()
+		afterInit()
 	}
 	
 	public init() {
 		super.init(nibName: nil, bundle: nil)
 		
-		setup()
+		afterInit()
 	}
+	
+	open func afterInit() {}
 	
 	public required init?(coder: NSCoder) {
 		fatalError()
 	}
     
-    open func setup() {}
     
     override open func loadView() {
         contentView = viewLoader()
