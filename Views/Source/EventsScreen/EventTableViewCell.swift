@@ -8,14 +8,14 @@
 
 import UIKit
 import Library
-import Combine
+import RxSwift
 
 class EventTableViewCell: UITableViewCell {
 
 	var currentIndexPath: IndexPath?
 	
-	private let descriptionTap = PassthroughSubject<IndexPath, Never>()
-	private var descriptionTapCancellable: AnyCancellable?
+	private let descriptionTap = PublishSubject<IndexPath>()
+	private var descriptionTapDisposable: Disposable?
 	
 	let newsImageView = UIImageView()
 		|> \.layer.cornerRadius .~ 10
@@ -70,19 +70,19 @@ class EventTableViewCell: UITableViewCell {
 	
 	override func prepareForReuse() {
 		currentIndexPath = nil
-		descriptionTapCancellable?.cancel()
-		descriptionTapCancellable = nil
+		descriptionTapDisposable?.dispose();
+		descriptionTapDisposable = nil
 	}
 
 	public func connectDescriptionTap<S>(to destination: S)
-		where S: Subject, S.Output == IndexPath, S.Failure == Never
+		where S: ObserverType, S.Element == IndexPath
 	{
-		descriptionTapCancellable = descriptionTap.subscribe(destination)
+		descriptionTapDisposable = descriptionTap.subscribe(destination)
 	}
 	
 	@objc func tapToDescription() {
 		guard let currentIndexPath = currentIndexPath else { return }
-		descriptionTap.send(currentIndexPath)
+		descriptionTap.onNext(currentIndexPath)
 	}
 	
 	required init?(coder: NSCoder) {

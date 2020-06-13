@@ -9,6 +9,12 @@ import UIKit
 import Library
 import Views
 
+class suka {
+	dynamic var soska: Int = 2
+	
+	
+}
+
 public class ScreenBuilder {
 	public static func getMainScreen(context: GlobalContext) -> UIViewController {
 		let mainViewController = UITabBarController()

@@ -7,7 +7,8 @@
 //
 
 import UIKit
-import Combine
+import RxSwift
+
 
 open class BaseViewController<View: UIView, Flow: FlowProtocol>
 : ContentViewController<View>, CancellableContainer, ViewControllerTemplate
@@ -15,9 +16,13 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 	public typealias Input = Flow.Input
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow
-
-	public let didLoadPublisher = PassthroughSubject<Void, Never>()
-    public var bag = Set<AnyCancellable>()
+	
+	private let didLoadSubject = PublishSubject<Void>()
+	public var didLoadObservable: Observable<Void> {
+		didLoadSubject.asObserver()
+	}
+	
+    public var bag = DisposeBag()
 	public let viewModel: BaseViewModel<Flow>
 	
 	open var input: Flow.Input {
@@ -32,8 +37,8 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>
 		super.viewDidLoad()
 		
 		didLoad()
-		bind(output: viewModel.transform(input: self.input, bag: &bag))
-		didLoadPublisher.send()
+		bind(output: viewModel.transform(input: self.input, bag: self.bag))
+		didLoadSubject.on()
 	}
 	
 	open func didLoad() {}

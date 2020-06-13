@@ -7,7 +7,7 @@
 
 import UIKit
 import Library
-import Combine
+import RxSwift
 
 public enum SettingsFlow: FlowProtocol {
 	
@@ -36,22 +36,22 @@ public enum SettingsFlow: FlowProtocol {
 	}
 	
 	public struct Input {
-		public let didTap: AnyPublisher<Int, Never>
+		public let didTap: Observable<Int>
 		
 		public init(
-			didTap: AnyPublisher<Int, Never>
+			didTap: Observable<Int>
 		) {
 			self.didTap = didTap
 		}
 	}
 	
 	public struct Output {
-		public let personInfo: AnyPublisher<PersonInfo, Never>
-		public let listData: AnyPublisher<[CellItems], Never>
+		public let personInfo: Observable<PersonInfo>
+		public let listData: Observable<[CellItems]>
 		
 		public init(
-			personInfo: AnyPublisher<PersonInfo, Never>,
-			listData: AnyPublisher<[CellItems], Never>
+			personInfo: Observable<PersonInfo>,
+			listData: Observable<[CellItems]>
 		) {
 			self.personInfo = personInfo
 			self.listData = listData

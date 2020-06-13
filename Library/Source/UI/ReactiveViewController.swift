@@ -7,10 +7,10 @@
 //
 
 import UIKit
-import Combine
+import RxSwift
 
 
 public protocol CancellableContainer {
-    var bag: Set<AnyCancellable> { get }
+    var bag: DisposeBag { get }
 }
 

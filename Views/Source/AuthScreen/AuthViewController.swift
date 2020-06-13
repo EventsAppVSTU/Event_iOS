@@ -8,30 +8,26 @@
 
 import UIKit
 import Library
-import Combine
+import RxSwift
 import Flow
 
 public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	
-	@Published var loginValue = ""
-	@Published var passwordValue = ""
-	
-	let loginTapSubject = PassthroughSubject<Void, Never>()
+	let loginValue = PublishSubject<String>()
+	let passwordValue = PublishSubject<String>()
+	let loginTapSubject = PublishSubject<Void>()
 	
 	public override func bind(output: Flow.Output) {
 		output.serverMessages
-			.receive(on: DispatchQueue.main)
-			.sink {
-				print($0)
-			}
-			.store(in: &self.bag)
+			.subscribe { print($0) }
+			.disposed(by: bag)
 	}
 
 	public override var input: Flow.Input {
-		Flow.Input(
-			email: $loginValue.eraseToAnyPublisher(),
-			password: $passwordValue.eraseToAnyPublisher(),
-			loginButton: loginTapSubject.eraseToAnyPublisher()
+		Input(
+			email: loginValue.asObserver(),
+			password: passwordValue.asObserver(),
+			loginButton: loginTapSubject.asObserver()
 		)
 	}
 	
@@ -50,15 +46,15 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	
 	@objc func textFieldValueChanged(_ sender: UITextField) {
 		if sender == contentView.loginField.corneredView {
-			loginValue = sender.text ?? ""
+			loginValue.onNext(sender.text ?? "")
 		}
 		else if sender == contentView.passField.corneredView {
-			passwordValue = sender.text ?? ""
+			passwordValue.onNext(sender.text ?? "")
 		}
 	}
 	
 	@objc func loginButtonTap(_ sender: UIControl) {
-		loginTapSubject.send()
+		loginTapSubject.on()
 	}
 }
 

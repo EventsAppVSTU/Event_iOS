@@ -18,6 +18,7 @@ public class NewsView: UIView {
 	let rootScrollView = UIScrollView()
 		|> \.backgroundColor .~ .clear
 		|> \.alwaysBounceVertical .~ true
+		|> \.clipsToBounds .~ false
 	
 	let titleLabel = UILabel()
 		|> \.numberOfLines .~ 0
@@ -47,6 +48,8 @@ public class NewsView: UIView {
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
+		
+		clipsToBounds = false
 		
 		backgroundColor = .systemBackground
 		rootScrollView.delegate = self

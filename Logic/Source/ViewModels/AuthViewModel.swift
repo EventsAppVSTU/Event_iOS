@@ -7,7 +7,7 @@
 //
 
 import Library
-import Combine
+import RxSwift
 import Views
 import Flow
 
@@ -25,16 +25,18 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 		super.init()
 	}
 	
-	private var serverResponse = PassthroughSubject<Complete<String>, Never>()
+	private var serverResponse = PublishSubject<Complete<String>>()
 	
-	public override func transform(input: AuthFlow.Input, bag: inout Set<AnyCancellable>) -> AuthFlow.Output {	
+	public override func transform(input: AuthFlow.Input, bag: DisposeBag) -> AuthFlow.Output {
 		input.loginButton
-			.sink(receiveValue: unowned(globalContext, { (instance, _) in
-				let screen = ScreenBuilder.getMainScreen(context: instance)
-				instance.globalNavigationController.setViewControllers([screen], animated: true)
-			}))
-			.store(in: &bag)
+			.subscribe(
+				onNext: unowned(globalContext, { (instance, _) in
+					let screen = ScreenBuilder.getMainScreen(context: instance)
+					instance.globalNavigationController.setViewControllers([screen], animated: true)
+				})
+			)
+			.disposed(by: bag)
 		
-		return AuthFlow.Output(serverMessages: serverResponse.eraseToAnyPublisher())
+		return AuthFlow.Output(serverMessages: serverResponse.asObserver())
 	}
 }

@@ -9,7 +9,7 @@
 import UIKit
 import Library
 import Flow
-import Combine
+import RxSwift
 
 public class NewsViewController: BaseViewController<NewsView, NewsFlow> {
 	public override func afterInit() {
@@ -22,14 +22,17 @@ public class NewsViewController: BaseViewController<NewsView, NewsFlow> {
 	
 	public override var input: Input {
 		return Input(
-			shareButtonTap: Just(()).eraseToAnyPublisher()
+			shareButtonTap: Observable<Void>.create { _ in Disposables.create() }
 		)
 	}
 	
 	public override func bind(output: NewsFlow.Output) {
-		output.article
-			.sink(
-				receiveValue: unowned(contentView) { (instance, arg) in
+		Observable
+			.combineLatest(output.article, didLoadObservable)
+			.map { $0.0 }
+			.subscribe(
+				onNext: unowned(contentView)
+				{ (instance, arg) in
 					instance.titleLabel.text = arg.title
 					instance.contentView.descriptionLabel.text = arg.description
 					instance.contentView.textLabel.text = arg.content
@@ -37,6 +40,6 @@ public class NewsViewController: BaseViewController<NewsView, NewsFlow> {
 					instance.navigationBar.topItem?.title = arg.title
 				}
 			)
-			.store(in: &bag)
+			.disposed(by: bag)
 	}
 }

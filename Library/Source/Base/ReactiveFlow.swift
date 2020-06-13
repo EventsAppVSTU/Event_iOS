@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import Combine
+import RxSwift
 
 public protocol FlowProtocol {
 	associatedtype Input
@@ -24,7 +24,7 @@ public protocol ViewModelTemplate {
     associatedtype Flow: FlowProtocol
     associatedtype Input where Flow.Input == Input
     associatedtype Output where Flow.Output == Output
-    func transform(input: Input, bag: inout Set<AnyCancellable>) -> Output
+    func transform(input: Input, bag: DisposeBag) -> Output
 }
 
 public protocol ViewControllerTemplate: CancellableContainer {

@@ -10,13 +10,13 @@ import UIKit
 import Kingfisher
 import Library
 import Flow
-import Combine
+import RxSwift
 
 public class SettingsViewController: BaseViewController<SettingsView, SettingsFlow> {
 	
 	typealias UniqueItem = Unique<SettingsFlow.CellItems>
 	
-	fileprivate let didTapSubject = PassthroughSubject<Int, Never>()
+	fileprivate let didTapSubject = PublishSubject<Int>()
 	private var dataSource: UITableViewDiffableDataSource<OnceSection, UniqueItem>!
 	
 	public override func afterInit() {
@@ -29,36 +29,38 @@ public class SettingsViewController: BaseViewController<SettingsView, SettingsFl
 	
 	public override var input: SettingsFlow.Input {
 		return Input(
-			didTap: didTapSubject.eraseToAnyPublisher()
+			didTap: didTapSubject.asObserver()
 		)
 	}
 	
 	public override func bind(output: SettingsFlow.Output) {
-		output.personInfo
-			.combineLatest(didLoadPublisher) { (value, _) in value }
-			.sink(receiveValue:
-				unowned(contentView) { (instance, arg) in
+		Observable
+			.combineLatest(output.personInfo, didLoadObservable)
+			.map { $0.0 }
+			.subscribe(
+				onNext: unowned(contentView)
+				{ (instance, arg) in
 					instance.personNameLabel.text = arg.name
 					instance.personAvatarView.set(image: arg.avatar)
 				}
 			)
-			.store(in: &bag)
+			.disposed(by: bag)
 		
-		
-		output.listData
-			.combineLatest(didLoadPublisher) { (value, _) in return value }
-			.map { value ->  NSDiffableDataSourceSnapshot<OnceSection, UniqueItem> in
+		Observable
+			.combineLatest(output.listData, didLoadObservable)
+			.map { tuple ->  NSDiffableDataSourceSnapshot<OnceSection, UniqueItem> in
+				let value = tuple.0
 				var snapshot = NSDiffableDataSourceSnapshot<OnceSection, UniqueItem>()
 				snapshot.appendSections([.main])
 				snapshot.appendItems(value.map { Unique($0) })
 				return snapshot
 			}
-			.sink(receiveValue:
-				unowned(dataSource) {
+			.subscribe(
+				onNext: unowned(dataSource) {
 					$0.apply($1)
 				}
 			)
-			.store(in: &bag)
+			.disposed(by: bag)
 	}
 	
 	public override func didLoad() {
@@ -96,7 +98,7 @@ public class SettingsViewController: BaseViewController<SettingsView, SettingsFl
 
 extension SettingsViewController: UITableViewDelegate {
 	public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		didTapSubject.send(indexPath.row)
+		didTapSubject.onNext(indexPath.row)
 		tableView.selectRow(at: nil, animated: true, scrollPosition: .none)
 	}
 	
