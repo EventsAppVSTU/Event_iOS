@@ -29,14 +29,24 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 	
 	public override func transform(input: AuthFlow.Input, bag: DisposeBag) -> AuthFlow.Output {
 		input.loginButton
+			.observeOn(
+				MainScheduler.instance
+			)
+			.map(
+				unowned(globalContext) {
+					return (
+						vc: ScreenBuilder.getMainScreen(context: $0),
+						context: $0
+					)
+				}
+			)
 			.subscribe(
-				onNext: unowned(globalContext, { (instance, _) in
-					let screen = ScreenBuilder.getMainScreen(context: instance)
-					instance.globalNavigationController.setViewControllers([screen], animated: true)
-				})
+				onNext: { $0.context.globalNavigationController.setViewControllers([$0.vc], animated: true) }
 			)
 			.disposed(by: bag)
 		
-		return AuthFlow.Output(serverMessages: serverResponse.asObserver())
+		return AuthFlow.Output(
+			serverMessages: serverResponse.asObserver()
+		)
 	}
 }

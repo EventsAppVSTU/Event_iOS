@@ -10,6 +10,7 @@ import UIKit
 import Library
 import RxSwift
 
+
 class EventTableViewCell: UITableViewCell {
 
 	var currentIndexPath: IndexPath?

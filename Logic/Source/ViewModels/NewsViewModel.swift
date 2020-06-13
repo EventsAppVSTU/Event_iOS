@@ -31,10 +31,10 @@ public class NewsViewModel: BaseViewModel<NewsFlow> {
 		)
 		
 		return Output(
-			article: Observable<Flow.Article>.create({
+			article: Observable<Flow.Article>.create {
 				$0.onNext(fakeArticle)
 				return Disposables.create()
-			})
+			}
 		)
 	}
 }

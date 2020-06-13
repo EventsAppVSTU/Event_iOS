@@ -33,16 +33,19 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 	}
 	
 	public override func bind(output: EventsListFlow.Output) {
-		Observable.combineLatest(output.listData, didLoadObservable)
+		Observable
+			.combineLatest(
+				output.listData, didLoadObservable,
+				resultSelector: { a, _ in return a }
+			)
 			.map {
-				let listData = $0.0
 				var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem>()
 				snapshot.appendSections([.main])
-				snapshot.appendItems(listData)
+				snapshot.appendItems($0)
 				return snapshot
 			}
 			.subscribe(
-				onNext: (unowned(dataSource) { $0.apply($1) } )
+				onNext: unowned(dataSource) { $0.apply($1) }
 			)
 			.disposed(by: bag)
 	}

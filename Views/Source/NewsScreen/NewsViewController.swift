@@ -28,8 +28,10 @@ public class NewsViewController: BaseViewController<NewsView, NewsFlow> {
 	
 	public override func bind(output: NewsFlow.Output) {
 		Observable
-			.combineLatest(output.article, didLoadObservable)
-			.map { $0.0 }
+			.combineLatest(
+				output.article, didLoadObservable,
+				resultSelector: { a, _ in return a }
+			)
 			.subscribe(
 				onNext: unowned(contentView)
 				{ (instance, arg) in
