@@ -13,7 +13,6 @@ import Library
 
 public private(set) var globalNavigationController: UINavigationController!
 
-@UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
