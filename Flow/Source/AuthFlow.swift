@@ -7,19 +7,20 @@
 //
 
 import Library
-import Combine
+import RxSwift
+
 
 public enum AuthFlow: FlowProtocol {
 	
 	public struct Input {
-        public let password: AnyPublisher<String, Never>
-        public let email: AnyPublisher<String, Never>
-        public let loginButton: AnyPublisher<Void, Never>
+        public let password: Observable<String>
+        public let email: Observable<String>
+        public let loginButton: Observable<Void>
         
         public init(
-            email: AnyPublisher<String, Never>,
-            password: AnyPublisher<String, Never>,
-            loginButton: AnyPublisher<Void, Never>
+            email: Observable<String>,
+            password: Observable<String>,
+            loginButton: Observable<Void>
 		) {
             self.email = email
             self.password = password
@@ -28,10 +29,10 @@ public enum AuthFlow: FlowProtocol {
     }
 
 	public struct Output {
-		public let serverMessages: AnyPublisher<Complete<String>, Never>
+		public let serverMessages: Observable<Complete<String>>
 		
 		public init(
-			serverMessages: AnyPublisher<Complete<String>, Never>
+			serverMessages: Observable<Complete<String>>
 		) {
 			self.serverMessages = serverMessages
 		}

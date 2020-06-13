@@ -7,9 +7,10 @@
 
 import UIKit
 import Library
-import Combine
+import RxSwift
 
 public enum NewsFlow: FlowProtocol {
+	
 	public struct Article {
 		public let title: String
 		public let description: String
@@ -30,20 +31,20 @@ public enum NewsFlow: FlowProtocol {
 	}
 	
 	public struct Input {
-		public let shareButtonTap: AnyPublisher<Void, Never>
+		public let shareButtonTap: Observable<Void>
 		
 		public init(
-			shareButtonTap: AnyPublisher<Void, Never>
+			shareButtonTap: Observable<Void>
 		) {
 			self.shareButtonTap = shareButtonTap
 		}
 	}
 	
 	public struct Output {
-		public let article: AnyPublisher<Article, Never>
+		public let article: Observable<Article>
 		
 		public init(
-			article: AnyPublisher<Article, Never>
+			article: Observable<Article>
 		) {
 			self.article = article
 		}

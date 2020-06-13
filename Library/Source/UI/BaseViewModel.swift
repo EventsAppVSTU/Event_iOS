@@ -6,7 +6,7 @@
 //  Copyright © 2020 Araik Garibian. All rights reserved.
 //
 
-import Combine
+import RxSwift
 
 open class BaseViewModel<Flow: FlowProtocol>: ViewModelTemplate {
 	public typealias Input = Flow.Input
@@ -15,7 +15,7 @@ open class BaseViewModel<Flow: FlowProtocol>: ViewModelTemplate {
 	
 	public init() {}
 	
-	open func transform(input: Flow.Input, bag: inout Set<AnyCancellable>) -> Flow.Output {
+	open func transform(input: Flow.Input, bag: DisposeBag) -> Flow.Output {
 		fatalError("You did not override the transform method for type \(type(of: self))")
 	}
 }

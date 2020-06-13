@@ -7,7 +7,7 @@
 
 import UIKit
 import Library
-import Combine
+import RxSwift
 
 public enum EventsListFlow: FlowProtocol {
 	
@@ -30,21 +30,22 @@ public enum EventsListFlow: FlowProtocol {
 		}
 	}
 	
+	
 	public struct Input {
-		public let descriptionDidTap: AnyPublisher<Int, Never>
+		public let descriptionDidTap: Observable<Int>
 		
 		public init(
-			descriptionDidTap: AnyPublisher<Int, Never>
+			descriptionDidTap: Observable<Int>
 		) {
 			self.descriptionDidTap = descriptionDidTap
 		}
 	}
 	
 	public struct Output {
-		public let listData: AnyPublisher<[CellItem], Never>
+		public let listData: Observable<[CellItem]>
 		
 		public init(
-			listData: AnyPublisher<[CellItem], Never>
+			listData: Observable<[CellItem]>
 		) {
 			self.listData = listData
 		}

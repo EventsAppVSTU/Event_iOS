@@ -8,6 +8,9 @@ targetTemplates:
         TARGETED_DEVICE_FAMILY: 1
     scheme:
       gatherCoverageData: true
+    dependencies:
+      - carthage: RxSwift
+      - carthage: RxRelay
 
 
   SwiftLint:
@@ -26,6 +29,9 @@ targetTemplates:
         TARGETED_DEVICE_FAMILY: 1
     scheme:
       gatherCoverageData: true
+    dependencies:
+      - carthage: RxSwift
+      - carthage: RxRelay
 
   Extension:
     type: app-extension

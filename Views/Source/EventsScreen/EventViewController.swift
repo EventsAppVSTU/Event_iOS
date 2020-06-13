@@ -9,12 +9,11 @@
 import UIKit
 import Library
 import Flow
-import Combine
+import RxSwift
 
 public class EventsListViewController: BaseViewController<UITableView, EventsListFlow> {
-
 	
-	fileprivate let sharedDescriptionTap = PassthroughSubject<IndexPath, Never>()
+	fileprivate let sharedDescriptionTap = PublishSubject<IndexPath>()
 	private var dataSource: UITableViewDiffableDataSource<OnceSection, EventsListFlow.CellItem>!
 	
 	public override func afterInit() {
@@ -29,23 +28,23 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 	
 	public override var input: Input {
 		return Input(
-			descriptionDidTap: sharedDescriptionTap.map(\.row).eraseToAnyPublisher()
+			descriptionDidTap: sharedDescriptionTap.map { $0.row }.asObservable()
 		)
 	}
 	
 	public override func bind(output: EventsListFlow.Output) {
-		output.listData
-			.combineLatest(didLoadPublisher) { (list, _) in list }
-			.map { listData ->  NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem> in
+		Observable.combineLatest(output.listData, didLoadObservable)
+			.map {
+				let listData = $0.0
 				var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem>()
 				snapshot.appendSections([.main])
 				snapshot.appendItems(listData)
 				return snapshot
 			}
-			.sink(receiveValue: unowned(dataSource) {
-				$0.apply($1)
-			})
-			.store(in: &bag)
+			.subscribe(
+				onNext: (unowned(dataSource) { $0.apply($1) } )
+			)
+			.disposed(by: bag)
 	}
 	
 	public override func didLoad() {

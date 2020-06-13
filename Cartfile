@@ -2,3 +2,5 @@ github "pointfreeco/swift-overture" #~> 0.5
 github "onevcat/Kingfisher" #~> 5.0
 github "kishikawakatsumi/KeychainAccess"
 github "nikislyak/Networking" "master"
+github "realm/realm-cocoa"
+github "ReactiveX/RxSwift" ~> 5.0

@@ -15,41 +15,40 @@ public class AuthView: UIView {
 	
 	public let loginBtn =
 		CornerView(UIButton(), verticalSpacing: 5)
-		|> \.backgroundColor .~ .systemRed
-		|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitleColor)(.white, .normal)))
-		|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitleColor)(.black, .highlighted)))
-		|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitle)("Вход", .normal)))
+			|> \.backgroundColor .~ .systemRed
+			|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitleColor)(.white, .normal)))
+			|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitleColor)(.black, .highlighted)))
+			|> sideEffect(^\.corneredView >>> sideEffect(flip(UIButton.setTitle)("Вход", .normal)))
 
 	public let passField =
 		CornerView(UITextField(), verticalSpacing: 10)
-		|> \.corneredView.borderStyle .~ .none
-		|> \.corneredView.textColor .~ .init(
-			dynamicProvider:{ $0.userInterfaceStyle == .dark ? .white : .black })
-		|> \.corneredView.attributedPlaceholder .~ .init(
-			string: "Пароль",
-			attributes: [.foregroundColor : UIColor.gray.withAlphaComponent(0.4)])
-		|> \.backgroundColor .~ .systemBackground
-		|> \.layer.borderColor .~ UIColor.gray.withAlphaComponent(0.4).cgColor
-		|> \.layer.borderWidth .~ 1
+			|> \.corneredView.borderStyle .~ .none
+			|> \.corneredView.textColor .~ .init(
+				dynamicProvider:{ $0.userInterfaceStyle == .dark ? .white : .black })
+			|> \.corneredView.attributedPlaceholder .~ .init(
+				string: "Пароль",
+				attributes: [.foregroundColor : UIColor.gray.withAlphaComponent(0.4)])
+			|> \.backgroundColor .~ .systemBackground
+			|> \.layer.borderColor .~ UIColor.gray.withAlphaComponent(0.4).cgColor
+			|> \.layer.borderWidth .~ 1
 	
     public let loginField =
 		CornerView(UITextField(), verticalSpacing: 10)
-		|> \.corneredView.borderStyle .~ .none
-		|> \.corneredView.textColor .~ .init(
-			dynamicProvider:{ $0.userInterfaceStyle == .dark ? .white : .black })
-		|> \.corneredView.attributedPlaceholder .~ .init(
-			string: "Логин",
-			attributes: [.foregroundColor : UIColor.gray.withAlphaComponent(0.4)])
-		|> \.backgroundColor .~ .systemBackground
-		|> \.layer.borderColor .~ UIColor.gray.withAlphaComponent(0.4).cgColor
-		|> \.layer.borderWidth .~ 1
-	
+			|> \.corneredView.borderStyle .~ .none
+			|> \.corneredView.textColor .~ .init(
+				dynamicProvider:{ $0.userInterfaceStyle == .dark ? .white : .black })
+			|> \.corneredView.attributedPlaceholder .~ .init(
+				string: "Логин",
+				attributes: [.foregroundColor : UIColor.gray.withAlphaComponent(0.4)])
+			|> \.backgroundColor .~ .systemBackground
+			|> \.layer.borderColor .~ UIColor.gray.withAlphaComponent(0.4).cgColor
+			|> \.layer.borderWidth .~ 1
 	
 	public lazy private(set) var credentinalStackView =
 		UIStackView(arrangedSubviews: [loginField, passField, loginBtn])
-		|> \.spacing .~ 8
-        |> \.axis .~ .vertical
-        |> \.translatesAutoresizingMaskIntoConstraints .~ false
+			|> \.spacing .~ 8
+			|> \.axis .~ .vertical
+			|> \.translatesAutoresizingMaskIntoConstraints .~ false
 	
 	public let brandStackView: UIStackView = {
         let image = UIImage(named: "brandLogo")
