@@ -33,13 +33,19 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 	
 	public override func transform(input: Input, bag: DisposeBag) -> Output {
 		input.descriptionDidTap
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(qos: .utility)
+			)
 			.subscribe(onNext: {
 				print("\(type(of: self)) \($0)")
+				print(Thread.current)
 				UIImpactFeedbackGenerator(style: .light).impactOccurred()
 			})
 			.disposed(by: bag)
 		
-		return Output(listData: downloadedListData.asObserver())
+		return Output(
+			listData: downloadedListData.asObserver()
+		)
 	}
 	
 }

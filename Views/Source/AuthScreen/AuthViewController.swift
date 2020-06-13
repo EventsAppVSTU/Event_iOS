@@ -19,7 +19,9 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	
 	public override func bind(output: Flow.Output) {
 		output.serverMessages
-			.subscribe { print($0) }
+			.subscribe {
+				print($0)
+			}
 			.disposed(by: bag)
 	}
 

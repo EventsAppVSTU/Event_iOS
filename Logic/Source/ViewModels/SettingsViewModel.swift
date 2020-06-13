@@ -19,7 +19,7 @@ public class SettingsViewModel: BaseViewModel<SettingsFlow> {
 		value: (avatar: .asset(name: "kremlin"), name: "Araik")
 	)
 	
-	let listItems = BehaviorSubject<[Item]>.init(
+	let listItems = BehaviorSubject<[Item]>(
 		value: [
 			.divider,
 			.item(value:
@@ -50,8 +50,12 @@ public class SettingsViewModel: BaseViewModel<SettingsFlow> {
 	
 	public override func transform(input: SettingsFlow.Input, bag: DisposeBag) -> SettingsFlow.Output {
 		input.didTap
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(qos: .utility)
+			)
 			.subscribe(onNext: {
-				print("\(type(of: self)) \($0)")
+				print("\(type(of: self)) \($0) ")
+				print(Thread.current)
 				UIImpactFeedbackGenerator(style: .light).impactOccurred()
 			})
 			.disposed(by: bag)
