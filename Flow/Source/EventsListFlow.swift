@@ -15,13 +15,13 @@ public enum EventsListFlow: FlowProtocol {
 		public let titleText: String
 		public let descriptionText: String
 		public let date: String
-		public let image: UIImage?
+		public let image: Image
 		
 		public init(
 			titleText: String,
 			descriptionText: String,
 			date: String,
-			image: UIImage?
+			image: Image
 		) {
 			self.titleText = titleText
 			self.descriptionText = descriptionText

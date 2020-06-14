@@ -39,6 +39,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.rootViewController = globalNavigationController
         window.makeKeyAndVisible()
         self.window = window
+		
+		globalNavigationController.interactivePopGestureRecognizer?.delegate = nil
+		
         return true
     }
 }

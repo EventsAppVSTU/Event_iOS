@@ -38,6 +38,7 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 				output.listData, didLoadObservable,
 				resultSelector: { a, _ in return a }
 			)
+			.observeOn(MainScheduler.instance)
 			.map {
 				var snapshot = NSDiffableDataSourceSnapshot<OnceSection, EventsListFlow.CellItem>()
 				snapshot.appendSections([.main])
@@ -64,7 +65,7 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 			cell.currentIndexPath = ip
 			cell.titleLabel.text = item.titleText
 			cell.descriptionLabel.text = item.descriptionText
-			cell.newsImageView.image = item.image
+			cell.newsImageView.set(image: item.image)
 			cell.dateLabel.text = item.date
 			cell.connectDescriptionTap(to: self.sharedDescriptionTap)
 			

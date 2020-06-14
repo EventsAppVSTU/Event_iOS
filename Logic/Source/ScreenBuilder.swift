@@ -17,7 +17,6 @@ public class ScreenBuilder {
 		mainViewController.viewControllers = [
 			getEventsListScreen(context: context),
 			getSettingsScreen(context: context),
-			getNewsScreen()
 		]
 		mainViewController.tabBar.tintColor = .systemRed
 		
@@ -39,8 +38,8 @@ public class ScreenBuilder {
 		return SettingsViewController(viewModel: viewModel)
 	}
 	
-	public static func getNewsScreen() -> UIViewController {
-		let viewModel = NewsViewModel()
+	public static func getNewsScreen(article: NewsViewModel.Flow.Article) -> UIViewController {
+		let viewModel = NewsViewModel(article: article)
 		return NewsViewController(viewModel: viewModel)
 	}
 }

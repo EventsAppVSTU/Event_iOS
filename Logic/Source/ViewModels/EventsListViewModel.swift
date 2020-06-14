@@ -10,6 +10,7 @@ import Library
 import RxSwift
 import Views
 import Flow
+import Networking
 
 public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 	let globalContext: GlobalContext
@@ -20,31 +21,73 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 		super.init()
 	}
 	
-	let downloadedListData = BehaviorSubject<[Flow.CellItem]>(value:
-		[
-			EventsListFlow.CellItem(
-				titleText: "Кремль и кококкоронавирус",
-				descriptionText: "Вчера провели конференцию в сарае с лидерами общественного мнения среди сообщества WAG и обсудили актуальные проблемы общества: кризис малого производства пивных напитков и мехатроников для DSG",
-				date: "Вроде вчера это было",
-				image: UIImage(named: "kremlin")
-			)
-		]
-	)
+	let downloadedListData = BehaviorSubject<[EventDTO]>(value: [])
 	
 	public override func transform(input: Input, bag: DisposeBag) -> Output {
+		
+		let request = RequestBuilder(url: "http://yaem.online/robo/events/events.php", path: [], httpMethod: .get)!
+			.set(\.headers, value: ["Authorization": "1 111111_2"])
+		
+		Gateway.shared.rx
+			.objectRequest(request, objectType: StatusResponseDTO<[EventDTO]>.self)
+			.observeOn(ConcurrentDispatchQueueScheduler(qos: .utility))
+			.map {
+				switch $0 {
+				case .completed(let info):
+					return info.arrivalObject.data.objects ?? []
+				default: return []
+				}
+			}
+			.subscribe(downloadedListData)
+			.disposed(by: bag)
+		
 		input.descriptionDidTap
 			.observeOn(
 				ConcurrentDispatchQueueScheduler(qos: .utility)
 			)
-			.subscribe(onNext: {
-				print("\(type(of: self)) \($0)")
-				print(Thread.current)
-				UIImpactFeedbackGenerator(style: .light).impactOccurred()
-			})
+			.map { [unowned self] index in
+				try! self.downloadedListData.value()[index]
+			}
+			.map { (dto) -> NewsFlow.Article in
+				NewsFlow.Article(
+					title: dto.name,
+					description: dto.place,
+					content: dto.description,
+					image: .remote(url: URL(string: dto.image)!)
+				)
+			}
+			.observeOn(
+				MainScheduler.instance
+			)
+			.subscribe(
+				unowned(globalContext)
+				{ (arg, instance) in
+					switch instance {
+					case.next(let info):
+						arg.globalNavigationController.pushViewController(ScreenBuilder.getNewsScreen(article: info), animated: true)
+					default: break
+					}
+					
+				}
+			)
 			.disposed(by: bag)
 		
+		let uiListData = downloadedListData
+			.observeOn(ConcurrentDispatchQueueScheduler(qos: .utility))
+			.map {
+				$0.map {
+					(dto) -> Flow.CellItem in
+					Flow.CellItem(
+						titleText: dto.name,
+						descriptionText: dto.description,
+						date: dto.startDate,
+						image: .remote(url: URL(string: dto.image)!)
+					)
+				}
+			}
+		
 		return Output(
-			listData: downloadedListData.asObserver()
+			listData: uiListData
 		)
 	}
 	

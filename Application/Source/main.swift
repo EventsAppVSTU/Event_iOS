@@ -8,6 +8,11 @@
 import UIKit
 
 
-UIApplicationMain(CommandLine.argc, CommandLine.unsafeArgv, nil, NSStringFromClass(AppDelegate.self))
+UIApplicationMain(
+	CommandLine.argc,
+	CommandLine.unsafeArgv,
+	NSStringFromClass(UIApplication.self),
+	NSStringFromClass(AppDelegate.self)
+)
 
 

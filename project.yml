@@ -28,6 +28,7 @@ targets:
       path: Application/Resource/Info.plist
       properties:
         CFBundleDisplayName: Events
+        NSAppTransportSecurity: { NSAllowsArbitraryLoads: true }
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         UILaunchStoryboardName: LaunchScreen
     settings:
@@ -44,10 +45,10 @@ targets:
       - target: Logic
       - target: Views
       - target: Flow
+      - target: Networking
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
-      - carthage: Networking
 
   Library:
     templates: [Framework]
@@ -61,7 +62,6 @@ targets:
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
-      - carthage: Networking
 
   Logic:
     templates: [Framework]
@@ -75,10 +75,11 @@ targets:
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
-      - carthage: Networking
+      - target: Networking
       - target: Library
       - target: Views
       - target: Flow
+      - target: Networking
 
   Views:
     templates: [Framework]
@@ -101,5 +102,16 @@ targets:
       base: 
         TARGET_PATH: Flow
     sources: Flow/Source
+    dependencies: 
+      - target: Library
+      
+  Networking:
+    templates: [Framework]
+    info:
+      path: Networking/Resource/Info.plist
+    settings: 
+      base: 
+        TARGET_PATH: Networking
+    sources: Networking/Source
     dependencies: 
       - target: Library

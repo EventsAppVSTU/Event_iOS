@@ -23,7 +23,6 @@ public extension UIImageView {
 		
 		guard let image = image else { return }
 		
-
 		switch image {
 		case .system(let name):
 			let image = UIImage(systemName: name)

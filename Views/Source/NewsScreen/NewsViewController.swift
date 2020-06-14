@@ -20,6 +20,17 @@ public class NewsViewController: BaseViewController<NewsView, NewsFlow> {
 		)
 	}
 	
+	public override func didLoad() {
+		if let navigationController = self.navigationController {
+			contentView.navigationBar.items?.first?.backBarButtonItem = .init(
+				title: nil,
+				style: .plain,
+				target: navigationController,
+				action: #selector(UINavigationController.popViewController(animated:))
+			)
+		}
+	}
+	
 	public override var input: Input {
 		return Input(
 			shareButtonTap: Observable<Void>.create { _ in Disposables.create() }
