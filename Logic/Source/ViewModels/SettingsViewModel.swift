@@ -51,7 +51,7 @@ public class SettingsViewModel: BaseViewModel<SettingsFlow> {
 	public override func transform(input: SettingsFlow.Input, bag: DisposeBag) -> SettingsFlow.Output {
 		input.didTap
 			.observeOn(
-				ConcurrentDispatchQueueScheduler(qos: .utility)
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
 			)
 			.subscribe(onNext: {
 				print("\(type(of: self)) \($0) ")

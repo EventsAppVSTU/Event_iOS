@@ -15,13 +15,14 @@ import Networking
 public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 	let globalContext: GlobalContext
 	
-	public init(globalContext: GlobalContext) {
+	
+	@Lazy public init(globalContext: GlobalContext) {
 		self.globalContext = globalContext
 		
 		super.init()
 	}
 	
-	let downloadedListData = BehaviorSubject<[EventDTO]>(value: [])
+	private(set) lazy var downloadedListData = BehaviorSubject<[EventDTO]>(value: [])
 	
 	public override func transform(input: Input, bag: DisposeBag) -> Output {
 		
@@ -30,7 +31,9 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 		
 		Gateway.shared.rx
 			.objectRequest(request, objectType: StatusResponseDTO<[EventDTO]>.self)
-			.observeOn(ConcurrentDispatchQueueScheduler(qos: .utility))
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
+			)
 			.map {
 				switch $0 {
 				case .completed(let info):
@@ -43,7 +46,7 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 		
 		input.descriptionDidTap
 			.observeOn(
-				ConcurrentDispatchQueueScheduler(qos: .utility)
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
 			)
 			.map { [unowned self] index in
 				try! self.downloadedListData.value()[index]
@@ -60,20 +63,21 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 				MainScheduler.instance
 			)
 			.subscribe(
-				unowned(globalContext)
-				{ (arg, instance) in
+				unowned(globalContext) { (arg, instance) in
 					switch instance {
 					case.next(let info):
+						UIImpactFeedbackGenerator(style: .light).impactOccurred()
 						arg.globalNavigationController.pushViewController(ScreenBuilder.getNewsScreen(article: info), animated: true)
 					default: break
 					}
-					
 				}
 			)
 			.disposed(by: bag)
 		
 		let uiListData = downloadedListData
-			.observeOn(ConcurrentDispatchQueueScheduler(qos: .utility))
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
+			)
 			.map {
 				$0.map {
 					(dto) -> Flow.CellItem in

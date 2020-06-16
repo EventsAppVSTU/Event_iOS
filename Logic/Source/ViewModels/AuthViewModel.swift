@@ -6,10 +6,12 @@
 //  Copyright © 2020 Araik Garibian. All rights reserved.
 //
 
+import Foundation
 import Library
 import RxSwift
 import Views
 import Flow
+import UIKit
 
 public class AuthViewModel: BaseViewModel<AuthFlow> {
 	
@@ -28,7 +30,32 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 	private var serverResponse = PublishSubject<Complete<String>>()
 	
 	public override func transform(input: AuthFlow.Input, bag: DisposeBag) -> AuthFlow.Output {
-		input.loginButton
+		
+		let cred = Observable
+			.combineLatest(input.email, input.password)
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
+			)
+			.map { (login: String, password: String) -> Credential in
+				Credential(email: login, password: password)
+			}
+		
+		let sharedLoginButton = input.loginButton.share()
+		
+		sharedLoginButton.withLatestFrom(cred)
+			.observeOn(
+				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
+			)
+			.map {
+				String(describing: $0)
+			}
+			.map {
+				Complete.failure(error: $0)
+			}
+			.subscribe(serverResponse)
+			.disposed(by: bag)
+		
+		sharedLoginButton
 			.observeOn(
 				MainScheduler.instance
 			)
@@ -40,9 +67,10 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 					)
 				}
 			)
-			.subscribe(
-				onNext: { $0.context.globalNavigationController.setViewControllers([$0.vc], animated: true) }
-			)
+			.subscribe(onNext: {
+				UIImpactFeedbackGenerator(style: .light).impactOccurred()
+				$0.context.globalNavigationController.setViewControllers([$0.vc], animated: true)
+			})
 			.disposed(by: bag)
 		
 		return AuthFlow.Output(
