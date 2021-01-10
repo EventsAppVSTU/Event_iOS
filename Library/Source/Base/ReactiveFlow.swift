@@ -14,12 +14,6 @@ public protocol FlowProtocol {
 	associatedtype Output
 }
 
-public protocol FlowStore {
-    associatedtype Flow: FlowProtocol
-    associatedtype Input where Flow.Input == Input
-    associatedtype Output where Flow.Output == Output
-}
-
 public protocol ViewModelTemplate {
     associatedtype Flow: FlowProtocol
     associatedtype Input where Flow.Input == Input

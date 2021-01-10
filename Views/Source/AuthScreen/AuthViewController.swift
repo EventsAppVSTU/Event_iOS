@@ -16,6 +16,7 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	let loginValue = PublishSubject<String>()
 	let passwordValue = PublishSubject<String>()
 	let loginTapSubject = PublishSubject<Void>()
+	let registrationTapSubject = PublishSubject<Void>()
 	
 	public override func bind(output: Flow.Output) {
 		output.serverMessages
@@ -29,7 +30,8 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 		Input(
 			email: loginValue.asObserver(),
 			password: passwordValue.asObserver(),
-			loginButton: loginTapSubject.asObserver()
+			loginButton: loginTapSubject.asObserver(),
+			registrationButton: registrationTapSubject.asObserver()
 		)
 	}
 	
@@ -38,6 +40,7 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 		contentView.addGestureRecognizer(tapGesture)
 		
 		contentView.loginBtn.corneredView.addTarget(self, action: #selector(loginButtonTap), for: .touchUpInside)
+		contentView.registrationButton.addTarget(self, action: #selector(registrationButtonTap), for: .touchUpInside)
 		contentView.loginField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
 		contentView.passField.corneredView.addTarget(self, action: #selector(textFieldValueChanged), for: .editingChanged)
 	}
@@ -58,6 +61,11 @@ public class AuthViewController: BaseViewController<AuthView, AuthFlow> {
 	@objc func loginButtonTap(_ sender: UIControl) {
 		loginTapSubject.on()
 	}
+	
+	@objc func registrationButtonTap(_ sender: UIControl) {
+		registrationTapSubject.on()
+	}
+
 }
 
 
