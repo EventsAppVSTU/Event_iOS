@@ -20,9 +20,9 @@ public extension UIImageView {
 	func set(image: Image?, options:KingfisherOptionsInfo? = nil) {
 		kf.cancelDownloadTask()
 		self.image = nil
-		
+
 		guard let image = image else { return }
-		
+
 		switch image {
 		case .system(let name):
 			let image = UIImage(systemName: name)
@@ -34,11 +34,11 @@ public extension UIImageView {
 			self.image = object
 		case .remote(let url):
 			var newOptions: KingfisherOptionsInfo = [.transition(.fade(0.3))]
-			
+
 			if let options = options {
 				newOptions.append(contentsOf: options)
 			}
-			
+
 			kf.setImage(
 				with: url,
 				options: newOptions
@@ -46,4 +46,3 @@ public extension UIImageView {
 		}
 	}
 }
-

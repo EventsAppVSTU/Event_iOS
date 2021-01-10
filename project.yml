@@ -11,12 +11,12 @@ options:
   createIntermediateGroups: true
 
 settings:
-  SWIFT_VERSION: "5.1.2"
+  SWIFT_VERSION: "5.3.2"
 
 targets:
   Application:
     # directlyEmbedCarthageDependencies: true
-    templates: [Application]
+    templates: [Application, SwiftLint]
     sources: 
       - path: Application/Source
         type: Folder
@@ -51,7 +51,7 @@ targets:
       - carthage: KeychainAccess
 
   Library:
-    templates: [Framework]
+    templates: [Framework, SwiftLint]
     info:
       path: Library/Resource/Info.plist
     settings: 
@@ -64,7 +64,7 @@ targets:
       - carthage: KeychainAccess
 
   Logic:
-    templates: [Framework]
+    templates: [Framework, SwiftLint]
     info:
       path: Logic/Resource/Info.plist
     settings: 
@@ -82,7 +82,7 @@ targets:
       - target: NewNetworking
 
   Views:
-    templates: [Framework]
+    templates: [Framework, SwiftLint]
     info:
       path: Views/Resource/Info.plist
     settings: 
@@ -95,7 +95,7 @@ targets:
       - carthage: Overture
 
   Flow:
-    templates: [Framework]
+    templates: [Framework, SwiftLint]
     info:
       path: Flow/Resource/Info.plist
     settings: 
@@ -106,7 +106,7 @@ targets:
       - target: Library
       
   NewNetworking:
-    templates: [Framework]
+    templates: [Framework, SwiftLint]
     info:
       path: NewNetworking/Resources/Info.plist
     settings: 

@@ -9,8 +9,6 @@
 import UIKit
 import RxSwift
 
-
 public protocol CancellableContainer {
     var bag: DisposeBag { get }
 }
-

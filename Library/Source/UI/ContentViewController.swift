@@ -9,16 +9,16 @@
 import UIKit
 
 open class ContentViewController<View: UIView>: UIViewController {
-	
+
 	public private(set) var contentView: View!
-	
-    open private(set) var viewLoader: () -> View = {
-        return View()
-    }
-	
+
+	open private(set) var viewLoader: () -> View = {
+		return View()
+	}
+
 	public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-		
+
 		afterInit()
 	}
 	
@@ -27,16 +27,15 @@ open class ContentViewController<View: UIView>: UIViewController {
 		
 		afterInit()
 	}
-	
+
 	open func afterInit() {}
-	
+
 	public required init?(coder: NSCoder) {
 		fatalError()
 	}
-    
-    
-    override open func loadView() {
-        contentView = viewLoader()
-        view = contentView
-    }
+
+	override open func loadView() {
+		contentView = viewLoader()
+		view = contentView
+	}
 }

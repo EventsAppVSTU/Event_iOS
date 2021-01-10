@@ -9,46 +9,47 @@
 import UIKit
 import RxSwift
 
-
-open class BaseViewController<View: UIView, Flow: FlowProtocol>
-: ContentViewController<View>, CancellableContainer, ViewControllerTemplate
+open class BaseViewController<View: UIView, Flow: FlowProtocol>:
+	ContentViewController<View>,
+	CancellableContainer,
+	ViewControllerTemplate
 {
 	public typealias Input = Flow.Input
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow
-	
+
 	private let didLoadSubject = PublishSubject<Void>()
 	public var didLoadObservable: Observable<Void> {
 		didLoadSubject.asObserver()
 	}
-	
+
     public var bag = DisposeBag()
 	public let viewModel: BaseViewModel<Flow>
-	
+
 	open var input: Flow.Input {
 		fatalError()
 	}
-	
+
 	open func bind(output: Flow.Output) {
 		fatalError()
 	}
-	
+
 	open override func viewDidLoad() {
 		super.viewDidLoad()
-		
+
 		didLoad()
 		bind(output: viewModel.transform(input: self.input, bag: self.bag))
 		didLoadSubject.on()
 	}
-	
+
 	open func didLoad() {}
-	
+
     public init(viewModel: BaseViewModel<Flow>) {
         self.viewModel = viewModel
-		
+
         super.init()
     }
-	
+
 	public required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
