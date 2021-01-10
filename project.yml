@@ -45,7 +45,7 @@ targets:
       - target: Logic
       - target: Views
       - target: Flow
-      - target: Networking
+      - target: NewNetworking
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
@@ -75,11 +75,11 @@ targets:
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
-      - target: Networking
+      - target: NewNetworking
       - target: Library
       - target: Views
       - target: Flow
-      - target: Networking
+      - target: NewNetworking
 
   Views:
     templates: [Framework]
@@ -105,13 +105,11 @@ targets:
     dependencies: 
       - target: Library
       
-  Networking:
+  NewNetworking:
     templates: [Framework]
     info:
-      path: Networking/Resource/Info.plist
+      path: NewNetworking/Resources/Info.plist
     settings: 
       base: 
-        TARGET_PATH: Networking
-    sources: Networking/Source
-    dependencies: 
-      - target: Library
+        TARGET_PATH: NewNetworking
+    sources: NewNetworking/Sources

@@ -14,7 +14,6 @@ import Flow
 import UIKit
 
 public class AuthViewModel: BaseViewModel<AuthFlow> {
-	
 	let globalContext: GlobalContext
 	
 	struct Credential {
@@ -70,6 +69,22 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 			.subscribe(onNext: {
 				UIImpactFeedbackGenerator(style: .light).impactOccurred()
 				$0.context.globalNavigationController.setViewControllers([$0.vc], animated: true)
+			})
+			.disposed(by: bag)
+		
+		
+		input
+			.registrationButton
+			.observeOn(
+				MainScheduler.instance
+			)
+			.map { [weak self] in self?.globalContext }
+			.subscribe(onNext: {
+				guard let context = $0 else { return }
+				context.globalNavigationController.pushViewController(
+					RegistrationViewController(viewModel: RegistrationViewModel(globalContext: context)),
+					animated: true
+				)
 			})
 			.disposed(by: bag)
 		

@@ -15,7 +15,6 @@ public extension URL {
     }
 }
 
-
 public extension RequestBuilder {
     @discardableResult func set<T>(_ keyPath: WritableKeyPath<RequestBuilder, T>, value: T) -> RequestBuilder {
 		var copy = self
@@ -23,7 +22,6 @@ public extension RequestBuilder {
         return copy
     }
 }
-
 
 public struct RequestBuilder: RequestStructure {
     // MARK: Required params

@@ -16,15 +16,18 @@ public enum AuthFlow: FlowProtocol {
         public let password: Observable<String>
         public let email: Observable<String>
         public let loginButton: Observable<Void>
+		public let registrationButton: Observable<Void>
         
         public init(
             email: Observable<String>,
             password: Observable<String>,
-            loginButton: Observable<Void>
+			loginButton: Observable<Void>,
+			registrationButton: Observable<Void>
 		) {
             self.email = email
             self.password = password
             self.loginButton = loginButton
+			self.registrationButton = registrationButton
         }
     }
 
@@ -38,3 +41,4 @@ public enum AuthFlow: FlowProtocol {
 		}
 	}
 }
+

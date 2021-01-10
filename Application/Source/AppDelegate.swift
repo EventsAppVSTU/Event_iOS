@@ -10,6 +10,7 @@ import UIKit
 import Logic
 import Views
 import Library
+import NewNetworking
 
 public private(set) var globalNavigationController: UINavigationController!
 
@@ -41,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = window
 		
 		globalNavigationController.interactivePopGestureRecognizer?.delegate = nil
-		
+
         return true
     }
 }
