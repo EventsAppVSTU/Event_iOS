@@ -7,9 +7,8 @@
 //
 
 import UIKit
-import Logic
-import Views
-import Library
+import Platform
+import AuthScreen
 import NewNetworking
 
 public private(set) var globalNavigationController: UINavigationController!

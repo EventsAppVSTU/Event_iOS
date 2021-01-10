@@ -42,10 +42,9 @@ targets:
 
     dependencies:
       - target: Library
-      - target: Logic
-      - target: Views
-      - target: Flow
       - target: NewNetworking
+      - target: AuthScreen
+      - target: Platform
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
@@ -62,54 +61,83 @@ targets:
       - carthage: Kingfisher
       - carthage: Overture
       - carthage: KeychainAccess
-
-  Logic:
-    templates: [Framework, SwiftLint]
-    info:
-      path: Logic/Resource/Info.plist
-    settings: 
-      base: 
-        TARGET_PATH: Logic
-    sources: Logic/Source
-    dependencies: 
-      - carthage: Kingfisher
-      - carthage: Overture
-      - carthage: KeychainAccess
-      - target: NewNetworking
-      - target: Library
-      - target: Views
-      - target: Flow
-      - target: NewNetworking
-
-  Views:
-    templates: [Framework, SwiftLint]
-    info:
-      path: Views/Resource/Info.plist
-    settings: 
-      base: 
-        TARGET_PATH: Views
-    sources: Views/Source
-    dependencies: 
-      - target: Library
-      - target: Flow
-      - carthage: Overture
-
-  Flow:
-    templates: [Framework, SwiftLint]
-    info:
-      path: Flow/Resource/Info.plist
-    settings: 
-      base: 
-        TARGET_PATH: Flow
-    sources: Flow/Source
-    dependencies: 
-      - target: Library
       
   NewNetworking:
-    templates: [Framework, SwiftLint]
+    templates: [Rx, Framework, SwiftLint]
     info:
       path: NewNetworking/Resources/Info.plist
     settings: 
       base: 
         TARGET_PATH: NewNetworking
     sources: NewNetworking/Sources
+
+  Platform:
+    templates: [Rx, Framework, SwiftLint]
+    info:
+      path: Platform/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: Platform
+    sources: Platform/Sources
+
+  AuthScreen:
+    templates: [ScreenFramework, Rx, SwiftLint]
+    info:
+      path: AuthScreen/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: AuthScreen
+    sources: AuthScreen/Sources
+    dependencies:
+      - target: EventsScreen
+      - target: RegistrationScreen
+
+  RegistrationScreen:
+    templates: [ScreenFramework, Rx, SwiftLint]
+    info:
+      path: RegistrationScreen/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: RegistrationScreen
+    sources: RegistrationScreen/Sources
+
+  NewsScreen:
+    templates: [ScreenFramework, Rx, SwiftLint]
+    info:
+      path: NewsScreen/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: NewsScreen
+    sources: NewsScreen/Sources
+
+  SettingsScreen:
+    templates: [ScreenFramework, Rx, SwiftLint]
+    info:
+      path: SettingsScreen/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: SettingsScreen
+    sources: SettingsScreen/Sources
+
+  EventsScreen:
+    templates: [ScreenFramework, Rx, SwiftLint]
+    info:
+      path: EventsScreen/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: EventsScreen
+    sources: EventsScreen/Sources
+    dependencies: 
+      - target: NewNetworking
+      - target: NewsScreen
+
+  DesignEngine:
+    templates: [Framework, SwiftLint]
+    info:
+      path: DesignEngine/Resources/Info.plist
+    settings:
+      base:
+        TARGET_PATH: DesignEngine
+    sources: DesignEngine/Sources
+    dependencies:
+      - carthage: Kingfisher 

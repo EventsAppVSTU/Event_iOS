@@ -19,7 +19,6 @@ targetTemplates:
           mint run swiftlint swiftlint --path ${TARGET_PATH}  --config ${SRCROOT}/.swiftlint.yml
         name: SwiftLint
 
-  
   Framework:
     type: framework
     platform: iOS
@@ -29,9 +28,28 @@ targetTemplates:
         TARGETED_DEVICE_FAMILY: 1
     scheme:
       gatherCoverageData: true
-    dependencies:
+
+  ScreenFramework:
+    type: framework
+    platform: iOS
+    deploymentTarget:
+      iOS: 13.0
+    base:
+        TARGETED_DEVICE_FAMILY: 1
+    scheme:
+      gatherCoverageData: true
+    dependencies: &dependencies
       - carthage: RxSwift
       - carthage: RxRelay
+      - target: Platform
+      - target: Library
+      - target: DesignEngine
+
+  Rx:
+    dependencies: &dependencies
+      - carthage: RxSwift
+      - carthage: RxRelay
+
 
   Extension:
     type: app-extension

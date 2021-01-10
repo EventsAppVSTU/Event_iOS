@@ -9,11 +9,13 @@ import UIKit
 
 @main struct Application {
 	static func main() throws {
-		UIApplicationMain(
-			CommandLine.argc,
-			CommandLine.unsafeArgv,
-			NSStringFromClass(UIApplication.self),
-			NSStringFromClass(AppDelegate.self)
-		)
+		autoreleasepool {
+			UIApplicationMain(
+				CommandLine.argc,
+				CommandLine.unsafeArgv,
+				NSStringFromClass(UIApplication.self),
+				NSStringFromClass(AppDelegate.self)
+			)
+		}
 	}
 }
