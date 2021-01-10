@@ -18,21 +18,20 @@ public extension RequestStructure {
     var keyEncodingStrategy: JSONEncoder.KeyEncodingStrategy {
         return .useDefaultKeys
     }
-    
+
     var urlParams: [String: String?]? {
         return nil
     }
-    
+
     var contentType: ContentType {
         return .json
     }
-    
+
     static var sharedHeaders: [String: String]? {
         return nil
     }
-	
+
     var keyDecodingStrategy: JSONDecoder.KeyDecodingStrategy {
         return .useDefaultKeys
     }
 }
-

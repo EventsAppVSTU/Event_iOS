@@ -17,7 +17,7 @@ public enum Image: Hashable {
 }
 
 public extension UIImageView {
-	func set(image: Image?, options:KingfisherOptionsInfo? = nil) {
+	func set(image: Image?, options: KingfisherOptionsInfo? = nil) {
 		kf.cancelDownloadTask()
 		self.image = nil
 

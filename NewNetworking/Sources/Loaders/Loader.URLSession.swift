@@ -41,10 +41,9 @@ extension Loader.URLSession: HTTPLoading {
 
 			do {
 				urlRequest.httpBody = try task.request.body.encode()
-			}
-			catch let e {
+			} catch let error {
 				task.finishedTask(with: .failure(
-					.init(code: .invalidEncodeBody(e), request: task.request)
+					.init(code: .invalidEncodeBody(error), request: task.request)
 				))
 				return
 			}
@@ -69,7 +68,7 @@ private extension Loader.URLSession {
 	func makeCompleteHandlerClosure(
 		task: HTTP.Task
 	) -> (Data?, URLResponse?, Error?) -> Void {
-		{ [weak self] (data, response, error) in
+		{ [weak self] (data: Data?, response: URLResponse?, error: Error?) in
 			let result: HTTP.Result
 			var httpResponse: HTTP.Response?
 
@@ -81,17 +80,21 @@ private extension Loader.URLSession {
 				)
 			}
 
-			if let e = error as? URLError {
+			if let error = error as? URLError {
 				let code: HTTP.Error.Code
-				switch e.code {
-					case .badURL: code = .invalidURL
-					default: code = .unknown
+
+				switch error.code {
+				case .badURL:
+					code = .invalidURL
+				default:
+					code = .unknown
 				}
+
 				result = .failure(HTTP.Error(
 					code: code,
 					request: task.request,
 					response: httpResponse,
-					underlyingError: e
+					underlyingError: error
 				))
 			} else if let someError = error {
 				result = .failure(HTTP.Error(
@@ -100,8 +103,8 @@ private extension Loader.URLSession {
 					response: httpResponse,
 					underlyingError: someError
 				))
-			} else if let r = httpResponse {
-				result = .success(r)
+			} else if let response = httpResponse {
+				result = .success(response)
 			} else {
 				result = .failure(HTTP.Error(
 					code: .invalidResponse,

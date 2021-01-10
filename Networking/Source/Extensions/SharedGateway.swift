@@ -10,10 +10,8 @@ import Foundation
 
 private let _gateway = Gateway()
 
-
 public extension Gateway {
     static var shared: Gateway {
         return _gateway as Gateway
     }
 }
-

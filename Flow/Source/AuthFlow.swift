@@ -9,15 +9,14 @@
 import Library
 import RxSwift
 
-
 public enum AuthFlow: FlowProtocol {
-	
+
 	public struct Input {
         public let password: Observable<String>
         public let email: Observable<String>
         public let loginButton: Observable<Void>
 		public let registrationButton: Observable<Void>
-        
+
         public init(
             email: Observable<String>,
             password: Observable<String>,
@@ -33,7 +32,7 @@ public enum AuthFlow: FlowProtocol {
 
 	public struct Output {
 		public let serverMessages: Observable<Complete<String>>
-		
+
 		public init(
 			serverMessages: Observable<Complete<String>>
 		) {
@@ -41,4 +40,3 @@ public enum AuthFlow: FlowProtocol {
 		}
 	}
 }
-

@@ -28,7 +28,7 @@ public struct RequestBuilder: RequestStructure {
     public let httpMethod: HTTPMethod
     public let baseURL: URL
     public let path: [String]
-    
+
     // MARK: Optional params
 	public var decoderConfigure: ((JSONDecoder) -> Void)?
     public var body: HTTPBody = .none
@@ -36,23 +36,21 @@ public struct RequestBuilder: RequestStructure {
     public var contentType: ContentType = .json
     public var encoderConfigure: ((JSONEncoder) -> Void)?
     public var headers: [String: String]?
-    
+
     // MARK: Inits
     public init(
         httpMethod: HTTPMethod,
         url: URL,
-        path: [String])
-    {
+        path: [String]) {
         self.baseURL = url
         self.path = path
         self.httpMethod = httpMethod
     }
-    
+
     public init?(
         url: AnyURL,
         path: [String],
-        httpMethod: HTTPMethod)
-    {
+        httpMethod: HTTPMethod) {
         switch url {
         case .native(let url):
             self.init(

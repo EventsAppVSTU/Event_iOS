@@ -9,7 +9,7 @@
 import UIKit
 
 final internal class DividerTableViewCell: UITableViewCell {
-	
+
 	var dividerColor: UIColor? {
 		get {
 			return backgroundColor
@@ -18,19 +18,19 @@ final internal class DividerTableViewCell: UITableViewCell {
 			backgroundColor = newValue
 		}
 	}
-	
+
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: style, reuseIdentifier: reuseIdentifier)
-		
+
 		backgroundColor = .systemGroupedBackground
 		selectionStyle = .none
-		
+
 		contentView.translatesAutoresizingMaskIntoConstraints = false
 		contentView.heightAnchor.constraint(equalToConstant: 1).isActive = true
 	}
-	
+
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
-	
+
 }

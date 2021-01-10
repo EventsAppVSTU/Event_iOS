@@ -15,24 +15,24 @@ import ObjectiveC.runtime
 
 public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 	let globalContext: GlobalContext
-	
+
 	public init(globalContext: GlobalContext) {
 		self.globalContext = globalContext
-		
+
 		super.init()
 	}
-	
+
 	private(set) var downloadedListData = BehaviorSubject<[EventDTO]>(value: [])
 
 	public override func transform(input: Input, bag: DisposeBag) -> Output {
 		input.descriptionDidTap
-			.observeOn(
+			.observe(on:
 				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
 			)
-			.map { [unowned self] index in
-				try! self.downloadedListData.value()[index]
+			.compactMap { [unowned self] index in
+				try? self.downloadedListData.value()[index]
 			}
-			.map { (dto) -> NewsFlow.Article in
+			.map { dto -> NewsFlow.Article in
 				NewsFlow.Article(
 					title: dto.name,
 					description: dto.place,
@@ -40,11 +40,11 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 					image: .remote(url: URL(string: dto.image)!)
 				)
 			}
-			.observeOn(
+			.observe(on:
 				MainScheduler.instance
 			)
 			.subscribe(
-				unowned(globalContext) { (arg, instance) in
+				unowned(globalContext) { arg, instance in
 					switch instance {
 					case.next(let info):
 						UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -54,22 +54,12 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 				}
 			)
 			.disposed(by: bag)
-		
+
 		let uiListData = downloadedListData
-			.observeOn(
+			.observe(on:
 				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
 			)
-			.map {
-				$0.map {
-					(dto) -> Flow.CellItem in
-					Flow.CellItem(
-						titleText: dto.name,
-						descriptionText: dto.description,
-						date: dto.startDate,
-						image: .remote(url: URL(string: dto.image)!)
-					)
-				}
-			}
+			.map { $0.map(Flow.CellItem.init) }
 
 		if let request = HTTP.Request(stringUrl: "http://yaem.online/robo/events/events.php") {
 			makeChains {
@@ -88,6 +78,17 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 
 		return Output(
 			listData: uiListData
+		)
+	}
+}
+
+private extension EventsListFlow.CellItem {
+	init(dto: EventDTO) {
+		self.init(
+			titleText: dto.name,
+			descriptionText: dto.description,
+			date: dto.startDate,
+			image: .remote(url: URL(string: dto.image)!)
 		)
 	}
 }

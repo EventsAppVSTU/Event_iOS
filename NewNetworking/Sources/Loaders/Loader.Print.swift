@@ -19,7 +19,7 @@ public extension Loader {
 				task.request.url?.relativeString ?? "IncorrectURL"
 			)
 
-			let callback: HTTP.Callback = {
+			let callback: HTTP.CompletionCallback = {
 				os_log(
 					"Loaded %@ %@",
 					log: Self.logStream,

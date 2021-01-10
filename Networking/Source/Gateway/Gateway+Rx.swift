@@ -9,21 +9,19 @@
 import Foundation
 import RxSwift
 
-
 extension Gateway: ReactiveCompatible {}
-
 
 extension Reactive where Base: ReactiveCompatible & RequestExecutable {
     public func dataRequest(_ route: RequestStructure) -> ResponseObservable<Data> {
         ResponseObservable<Data>.create {
-			(event) -> Disposable in
-				
+			event -> Disposable in
+
             weak var task = self.base.dataRequest(route) {
-				(result) in
+				result in
                 event.onNext(result)
                 event.onCompleted()
             }
-				
+
             return Disposables.create {
                 task?.cancel()
             }
@@ -32,17 +30,16 @@ extension Reactive where Base: ReactiveCompatible & RequestExecutable {
 }
 
 public extension Reactive where Base: ReactiveCompatible & ObjectRequestExecutable {
-    func objectRequest<ResponseObject: Decodable>(_ route: RequestStructure, objectType: ResponseObject.Type) -> ResponseObservable<ResponseObject>
-    {
+    func objectRequest<ResponseObject: Decodable>(_ route: RequestStructure, objectType: ResponseObject.Type) -> ResponseObservable<ResponseObject> {
         ResponseObservable<ResponseObject>.create {
-			(event) -> Disposable in
-			
+			event -> Disposable in
+
             weak var task = self.base.objectRequest(route, objectType: ResponseObject.self) {
-				(result) in
+				result in
                 event.onNext(result)
                 event.onCompleted()
             }
-			
+
             return Disposables.create {
                 task?.cancel()
             }

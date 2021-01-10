@@ -1,3 +1,5 @@
+// swiftlint:disable all
+
 ////
 ////  Loader.Environment.swift
 ////  NewNetworking

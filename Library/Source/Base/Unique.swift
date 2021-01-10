@@ -10,15 +10,15 @@ import Foundation
 public struct Unique<T>: Hashable, Equatable {
 	private let uuid = UUID()
 	public let value: T
-	
+
 	public init(_ value: T) {
 		self.value = value
 	}
-	
+
 	public func hash(into hasher: inout Hasher) {
 		hasher.combine(uuid)
 	}
-	
+
 	public static func == (lhs: Unique<T>, rhs: Unique<T>) -> Bool {
 		return lhs.uuid == rhs.uuid
 	}

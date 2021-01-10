@@ -21,17 +21,17 @@ open class ContentViewController<View: UIView>: UIViewController {
 
 		afterInit()
 	}
-	
+
 	public init() {
 		super.init(nibName: nil, bundle: nil)
-		
+
 		afterInit()
 	}
 
 	open func afterInit() {}
 
 	public required init?(coder: NSCoder) {
-		fatalError()
+		super.init(coder: coder)
 	}
 
 	override open func loadView() {

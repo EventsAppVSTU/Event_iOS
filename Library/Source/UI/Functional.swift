@@ -6,6 +6,8 @@
 //  Copyright © 2020 user. All rights reserved.
 //
 
+// swiftlint:disable identifier_name
+
 import Foundation
 
 @discardableResult
@@ -45,17 +47,20 @@ public func set<T: AnyObject, V>(
     return { $0[keyPath: keyPath] = value }
 }
 
-public func set<T: AnyObject, V>(_ kp: ReferenceWritableKeyPath<T, V>) -> (T) -> (V) -> Void {
+public func set<T: AnyObject, V>(_ keyPath: ReferenceWritableKeyPath<T, V>) -> (T) -> (V) -> Void {
     return { instance in
-        let i = instance
-        
-        return { [weak i] value in
-            i?[keyPath: kp] = value
+        let localInstance = instance
+
+        return { [weak localInstance] value in
+			localInstance?[keyPath: keyPath] = value
         }
     }
 }
 
-@inline(__always) public func unowned<T: AnyObject, A>(_ instance: T, _ method: @escaping (T, A) -> Void) -> (A) -> Void {
+@inline(__always) public func unowned<T: AnyObject, A>(
+	_ instance: T,
+	_ method: @escaping (T, A) -> Void
+) -> (A) -> Void {
 	return { [unowned instance] arg in
 		method(instance, arg)
 	}
@@ -111,8 +116,8 @@ public func it<A>(_ arg: A) -> A {
     arg
 }
 
-public func isEqual<P: Equatable, T>(_ kp: KeyPath<T, P>, to value: P) -> (T) -> Bool {
-    return { $0[keyPath: kp] == value }
+public func isEqual<P: Equatable, T>(_ keyPath: KeyPath<T, P>, to value: P) -> (T) -> Bool {
+    return { $0[keyPath: keyPath] == value }
 }
 
 public func sideEffect<A, R>(_ closure: @escaping (A) -> R) -> (A) -> A {
@@ -139,6 +144,7 @@ public func two<R, A, B>(_ kp0: KeyPath<R, A>, _ kp1: KeyPath<R, B>) -> (R) -> (
     return { ($0[keyPath: kp0], $0[keyPath: kp1]) }
 }
 
+// swiftlint:disable:next large_tuple
 public func three<R, A, B, C>(_ kp0: KeyPath<R, A>, _ kp1: KeyPath<R, B>, _ kp2: KeyPath<R, C>) -> (R) -> (A, B, C) {
     return { ($0[keyPath: kp0], $0[keyPath: kp1], $0[keyPath: kp2]) }
 }
@@ -163,8 +169,8 @@ public func when<V>(
 
 prefix operator ^
 
-public prefix func ^ <T, V>(_ kp: KeyPath<T, V>) -> (T) -> V {
-    return { $0[keyPath: kp] }
+public prefix func ^ <T, V>(_ keyPath: KeyPath<T, V>) -> (T) -> V {
+    return { $0[keyPath: keyPath] }
 }
 
 precedencegroup ForwardApplication {
@@ -174,8 +180,7 @@ precedencegroup ForwardApplication {
 
 infix operator |> : ForwardApplication
 
-@discardableResult
-public func |> <A, B>(_ o: A, g: @escaping (A) -> B) -> B {
+@discardableResult public func |> <A, B>(_ o: A, g: @escaping (A) -> B) -> B {
     g(o)
 }
 
@@ -185,8 +190,8 @@ precedencegroup KeyPathSetting {
 
 infix operator .~ : KeyPathSetting
 
-public func .~ <T: AnyObject, V>(_ kp: ReferenceWritableKeyPath<T, V>, _ value: V) -> (T) -> T {
-    return { $0[keyPath: kp] = value; return $0 }
+public func .~ <T: AnyObject, V>(_ keyPath: ReferenceWritableKeyPath<T, V>, _ value: V) -> (T) -> T {
+    return { $0[keyPath: keyPath] = value; return $0 }
 }
 
 precedencegroup ForwardComposition {
@@ -198,4 +203,8 @@ infix operator >>> : ForwardComposition
 
 public func >>> <A, B, C>(_ f: @escaping (A) -> B, _ g: @escaping (B) -> C) -> (A) -> C {
     return { g(f($0)) }
+}
+
+public func returnFirstObject<A, B>() -> (A, B) -> A {
+	{ a, _ in return a }
 }

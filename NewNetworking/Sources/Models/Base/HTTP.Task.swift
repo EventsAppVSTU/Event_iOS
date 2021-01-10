@@ -17,16 +17,17 @@ public extension HTTP.Task {
 }
 
 public extension HTTP {
-	typealias Callback = (HTTP.Result) -> Void
+	typealias CompletionCallback = (HTTP.Result) -> Void
+	typealias CancellableCallback = () -> Void
 }
 
 public extension HTTP {
 	class Task {
-		public var id: UUID { request.id }
-		public internal(set) var state: State = .prefered
-		public private(set) var cancellationHandlers = Array<() -> Void>()
-		public private(set) var completionHandlers: [Callback]
 		var request: HTTP.Request
+
+		public internal(set) var state: State = .prefered
+		public private(set) var cancellationHandlers = [CancellableCallback]()
+		public private(set) var completionHandlers: [CompletionCallback]
 
 		public init(
 			request: HTTP.Request,
@@ -38,7 +39,7 @@ public extension HTTP {
 
 		public init(
 			request: HTTP.Request,
-			completionHandlers: [Callback]
+			completionHandlers: [CompletionCallback]
 		) {
 			self.request = request
 			self.completionHandlers = completionHandlers
@@ -47,6 +48,10 @@ public extension HTTP {
 }
 
 public extension HTTP.Task {
+	var id: UUID {
+		request.id
+	}
+
 	func addCancellationHandler(_ handler: @escaping () -> Void) {
 		cancellationHandlers.append(handler)
 	}

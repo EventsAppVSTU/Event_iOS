@@ -11,6 +11,6 @@ public struct Empty {
 	public static var empty: Empty {
 		.init()
 	}
-	
+
 	private init() {}
 }

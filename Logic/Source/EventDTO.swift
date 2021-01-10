@@ -20,7 +20,7 @@ public struct EventDTO: Decodable {
 public struct StatusResponseDTO<Object: Decodable>: Decodable {
 	public let status: String
 	public let data: DataResponseDTO<Object>
-	
+
 }
 
 public struct DataResponseDTO<Object: Decodable>: Decodable {

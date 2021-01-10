@@ -7,11 +7,11 @@
 //
 
 import Foundation
- 
+
 internal extension URL {
     func appendingPathComponent(_ pathArray: [String]) -> URL {
         return pathArray.reduce(self) {
-			(res, pathItem) -> URL in
+			res, pathItem -> URL in
             res.appendingPathComponent(pathItem)
         }
     }

@@ -12,7 +12,7 @@ import RxSwift
 import Flow
 
 public class RegistrationViewController: BaseViewController<RegistrationView, RegistrationFlow> {
-	
+
 	let loginValue = PublishSubject<String>()
 	let passwordValue = PublishSubject<String>()
 	let nameValue = PublishSubject<String>()
@@ -20,7 +20,7 @@ public class RegistrationViewController: BaseViewController<RegistrationView, Re
 	let organizationNameValue = PublishSubject<String>()
 	let registrationTapSubject = PublishSubject<Void>()
 	let backTapSubject = PublishSubject<Void>()
-	
+
 	public override func bind(output: Flow.Output) {
 		output.serverMessages
 			.subscribe {
@@ -39,11 +39,11 @@ public class RegistrationViewController: BaseViewController<RegistrationView, Re
 			backButton: backTapSubject.asObserver()
 		)
 	}
-	
+
 	public override func didLoad() {
 		let tapGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
 		contentView.addGestureRecognizer(tapGesture)
-		
+
 		contentView.backButton.addTarget(
 			self,
 			action: #selector(backButtonTap),
@@ -80,33 +80,29 @@ public class RegistrationViewController: BaseViewController<RegistrationView, Re
 			for: .editingChanged
 		)
 	}
-	
+
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
-	
+
 	@objc func textFieldValueChanged(_ sender: UITextField) {
 		if sender == contentView.loginField.corneredView {
 			loginValue.onNext(sender.text ?? "")
-		}
-		else if sender == contentView.passField.corneredView {
+		} else if sender == contentView.passField.corneredView {
 			passwordValue.onNext(sender.text ?? "")
-		}
-		else if sender == contentView.nameField.corneredView {
+		} else if sender == contentView.nameField.corneredView {
 			nameValue.onNext(sender.text ?? "")
-		}
-		else if sender == contentView.surnameField.corneredView {
+		} else if sender == contentView.surnameField.corneredView {
 			surnameValue.onNext(sender.text ?? "")
-		}
-		else if sender == contentView.organizationNameField.corneredView {
+		} else if sender == contentView.organizationNameField.corneredView {
 			organizationNameValue.onNext(sender.text ?? "")
 		}
 	}
-	
+
 	@objc func registrationButtonTap(_ sender: UIControl) {
 		registrationTapSubject.on()
 	}
-	
+
 	@objc func backButtonTap(_ sender: UIControl) {
 		backTapSubject.on()
 	}

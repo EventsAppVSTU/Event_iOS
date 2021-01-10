@@ -20,7 +20,7 @@ public protocol DownloadExecutable: class {
 }
 
 public protocol RequestExecutable: class {
-    
+
     /// Build request and start REST data task
     ///
     /// - Parameters:
@@ -32,7 +32,7 @@ public protocol RequestExecutable: class {
 }
 
 public protocol ObjectRequestExecutable: class {
-    
+
     /// /// Build request and start REST data task
     /// - Parameters:
     ///   - route: request params

@@ -8,9 +8,8 @@
 import Library
 import RxSwift
 
-
 public enum RegistrationFlow: FlowProtocol {
-	
+
 	public struct Input {
         public let password: Observable<String>
 		public let name: Observable<String>
@@ -18,7 +17,7 @@ public enum RegistrationFlow: FlowProtocol {
 		public let organizationName: Observable<String>
         public let registrationButton: Observable<Void>
 		public let backButton: Observable<Void>
-        
+
         public init(
             password: Observable<String>,
 			name: Observable<String>,
@@ -38,7 +37,7 @@ public enum RegistrationFlow: FlowProtocol {
 
 	public struct Output {
 		public let serverMessages: Observable<Complete<String>>
-		
+
 		public init(
 			serverMessages: Observable<Complete<String>>
 		) {

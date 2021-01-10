@@ -13,51 +13,45 @@ import Views
 import Flow
 import UIKit
 
+public extension AuthViewModel {
+	struct Credential {
+		public let email: String
+		public let password: String
+
+		public init(email: String, password: String) {
+			self.email = email
+			self.password = password
+		}
+	}
+}
+
 public class AuthViewModel: BaseViewModel<AuthFlow> {
 	let globalContext: GlobalContext
-	
-	struct Credential {
-		let email: String
-		let password: String
-	}
-	
+
 	public init(globalContext: GlobalContext) {
 		self.globalContext = globalContext
 		super.init()
 	}
-	
+
 	private var serverResponse = PublishSubject<Complete<String>>()
-	
+
 	public override func transform(input: AuthFlow.Input, bag: DisposeBag) -> AuthFlow.Output {
-		
 		let cred = Observable
 			.combineLatest(input.email, input.password)
-			.observeOn(
-				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
-			)
-			.map { (login: String, password: String) -> Credential in
-				Credential(email: login, password: password)
-			}
-		
+			.observe(on: ConcurrentDispatchQueueScheduler(queue: .global(qos: .utility)))
+			.map(Credential.init)
+
 		let sharedLoginButton = input.loginButton.share()
-		
+
 		sharedLoginButton.withLatestFrom(cred)
-			.observeOn(
-				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
-			)
-			.map {
-				String(describing: $0)
-			}
-			.map {
-				Complete.failure(error: $0)
-			}
+			.observe(on: ConcurrentDispatchQueueScheduler(queue: .global(qos: .utility)))
+			.map { String(describing: $0) }
+			.map { Complete.failure(error: $0) }
 			.subscribe(serverResponse)
 			.disposed(by: bag)
-		
+
 		sharedLoginButton
-			.observeOn(
-				MainScheduler.instance
-			)
+			.observe(on: MainScheduler.instance )
 			.map(
 				unowned(globalContext) {
 					return (
@@ -71,11 +65,10 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 				$0.context.globalNavigationController.setViewControllers([$0.vc], animated: true)
 			})
 			.disposed(by: bag)
-		
-		
+
 		input
 			.registrationButton
-			.observeOn(
+			.observe(on:
 				MainScheduler.instance
 			)
 			.map { [weak self] in self?.globalContext }
@@ -87,7 +80,7 @@ public class AuthViewModel: BaseViewModel<AuthFlow> {
 				)
 			})
 			.disposed(by: bag)
-		
+
 		return AuthFlow.Output(
 			serverMessages: serverResponse.asObserver()
 		)

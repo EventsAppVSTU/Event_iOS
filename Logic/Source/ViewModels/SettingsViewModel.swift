@@ -12,13 +12,13 @@ import Views
 import Flow
 
 public class SettingsViewModel: BaseViewModel<SettingsFlow> {
-	
+
 	typealias Item = Flow.CellItems
-	
+
 	let personInfo = BehaviorSubject<Flow.PersonInfo>(
 		value: (avatar: .asset(name: "kremlin"), name: "Araik")
 	)
-	
+
 	let listItems = BehaviorSubject<[Item]>(
 		value: [
 			.divider,
@@ -47,12 +47,10 @@ public class SettingsViewModel: BaseViewModel<SettingsFlow> {
 			.divider
 		]
 	)
-	
+
 	public override func transform(input: SettingsFlow.Input, bag: DisposeBag) -> SettingsFlow.Output {
 		input.didTap
-			.observeOn(
-				ConcurrentDispatchQueueScheduler(queue: DispatchQueue.global(qos: .utility))
-			)
+			.observe(on: ConcurrentDispatchQueueScheduler(queue: .global(qos: .utility)))
 			.subscribe(onNext: {
 				print("\(type(of: self)) \($0) ")
 				print(Thread.current)
@@ -60,7 +58,6 @@ public class SettingsViewModel: BaseViewModel<SettingsFlow> {
 			})
 			.disposed(by: bag)
 
-		
 		return Output(
 			personInfo: personInfo.asObserver(),
 			listData: listItems.asObserver()

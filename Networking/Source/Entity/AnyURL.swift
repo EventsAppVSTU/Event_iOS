@@ -15,15 +15,15 @@ public enum AnyURL {
 
 extension AnyURL: RawRepresentable {
     public typealias RawValue = URL?
-    
+
     public init?(rawValue: URL?) {
-        if let url = rawValue  {
+        if let url = rawValue {
             self = .native(url)
         } else {
             return nil
         }
     }
-    
+
     public var rawValue: URL? {
         if case let AnyURL.native(url) = self {
             return url
@@ -32,10 +32,9 @@ extension AnyURL: RawRepresentable {
     }
 }
 
-
 extension AnyURL: ExpressibleByStringLiteral {
 	public typealias StringLiteralType = String
-	
+
 	public init(stringLiteral value: Self.StringLiteralType) {
 		self = .string(value)
 	}

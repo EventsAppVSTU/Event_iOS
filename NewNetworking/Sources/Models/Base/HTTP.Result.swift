@@ -12,15 +12,19 @@ public extension HTTP {
 public extension HTTP.Result {
 	var request: HTTP.Request {
 		switch self {
-			case .success(let response): return response.request
-			case .failure(let error): return error.request
+		case .success(let response):
+			return response.request
+		case .failure(let error):
+			return error.request
 		}
 	}
 
 	var response: HTTP.Response? {
 		switch self {
-			case .success(let response): return response
-			case .failure(let error): return error.response
+		case .success(let response):
+			return response
+		case .failure(let error):
+			return error.response
 		}
 	}
 }

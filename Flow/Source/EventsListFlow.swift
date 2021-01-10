@@ -10,13 +10,13 @@ import Library
 import RxSwift
 
 public enum EventsListFlow: FlowProtocol {
-	
+
 	public struct CellItem: Hashable {
 		public let titleText: String
 		public let descriptionText: String
 		public let date: String
 		public let image: Image
-		
+
 		public init(
 			titleText: String,
 			descriptionText: String,
@@ -29,21 +29,20 @@ public enum EventsListFlow: FlowProtocol {
 			self.image = image
 		}
 	}
-	
-	
+
 	public struct Input {
 		public let descriptionDidTap: Observable<Int>
-		
+
 		public init(
 			descriptionDidTap: Observable<Int>
 		) {
 			self.descriptionDidTap = descriptionDidTap
 		}
 	}
-	
+
 	public struct Output {
 		public let listData: Observable<[CellItem]>
-		
+
 		public init(
 			listData: Observable<[CellItem]>
 		) {

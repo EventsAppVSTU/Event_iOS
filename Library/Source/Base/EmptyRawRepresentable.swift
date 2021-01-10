@@ -14,4 +14,3 @@ public extension EmptyRawRepresentable {
         return nil
     }
 }
-

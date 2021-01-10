@@ -17,7 +17,7 @@ public enum ContentType {
 extension ContentType: RawRepresentable {
     private static var FormType = "application/x-www-form-urlencoded"
     private static var JsonType = "application/json"
-    
+
     public init(rawValue: String) {
         if rawValue == ContentType.JsonType {
             self = .json
@@ -25,7 +25,7 @@ extension ContentType: RawRepresentable {
             self = .form
         } else { self = .custom(value: rawValue) }
     }
-    
+
     public var rawValue: String {
         switch self {
         case .form:

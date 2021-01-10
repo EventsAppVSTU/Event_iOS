@@ -9,9 +9,8 @@ import UIKit
 
 public class GlobalContext {
 	public let globalNavigationController: UINavigationController
-	
-	public init(globalNavigationController: UINavigationController)
-	{
+
+	public init(globalNavigationController: UINavigationController) {
 		self.globalNavigationController = globalNavigationController
 	}
 }

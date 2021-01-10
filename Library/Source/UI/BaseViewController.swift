@@ -9,11 +9,9 @@
 import UIKit
 import RxSwift
 
-open class BaseViewController<View: UIView, Flow: FlowProtocol>:
-	ContentViewController<View>,
+open class BaseViewController<View: UIView, Flow: FlowProtocol>: ContentViewController<View>,
 	CancellableContainer,
-	ViewControllerTemplate
-{
+	ViewControllerTemplate {
 	public typealias Input = Flow.Input
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow
@@ -27,11 +25,11 @@ open class BaseViewController<View: UIView, Flow: FlowProtocol>:
 	public let viewModel: BaseViewModel<Flow>
 
 	open var input: Flow.Input {
-		fatalError()
+		fatalError("Don't have 'input' implementation in \(self)")
 	}
 
 	open func bind(output: Flow.Output) {
-		fatalError()
+		fatalError("Don't have 'bind(output:)' implementation in \(self)")
 	}
 
 	open override func viewDidLoad() {

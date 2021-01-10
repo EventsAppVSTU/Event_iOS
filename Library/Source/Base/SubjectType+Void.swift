@@ -14,4 +14,3 @@ public extension ObserverType where Element == Void {
 		)
 	}
 }
-

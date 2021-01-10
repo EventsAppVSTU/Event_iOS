@@ -9,35 +9,34 @@ import UIKit
 import Library
 import Views
 
-
 public class ScreenBuilder {
 	public static func getMainScreen(context: GlobalContext) -> UIViewController {
 		let mainViewController = UITabBarController()
 		mainViewController.navigationItem.largeTitleDisplayMode = .always
 		mainViewController.viewControllers = [
 			getEventsListScreen(context: context),
-			getSettingsScreen(context: context),
+			getSettingsScreen(context: context)
 		]
 		mainViewController.tabBar.tintColor = .systemRed
-		
+
 		return mainViewController
 	}
-	
+
 	public static func getEventsListScreen(context: GlobalContext) -> UIViewController {
 		let viewModel = EventsListViewModel(globalContext: context)
 		let screen = EventsListViewController(viewModel: viewModel)
-		
+
 		let eventNavigationController = UINavigationController(rootViewController: screen)
 		eventNavigationController.navigationBar.prefersLargeTitles = true
-		
+
 		return eventNavigationController
 	}
-	
+
 	public static func getSettingsScreen(context: GlobalContext) -> UIViewController {
 		let viewModel = SettingsViewModel()
 		return SettingsViewController(viewModel: viewModel)
 	}
-	
+
 	public static func getNewsScreen(article: NewsViewModel.Flow.Article) -> UIViewController {
 		let viewModel = NewsViewModel(article: article)
 		return NewsViewController(viewModel: viewModel)
