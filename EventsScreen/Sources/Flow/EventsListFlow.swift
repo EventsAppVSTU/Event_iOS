@@ -32,21 +32,27 @@ public enum EventsListFlow: FlowProtocol {
 
 	public struct Input {
 		public let descriptionDidTap: Observable<Int>
+		public let pullToRefresh: Observable<Void>
 
 		public init(
-			descriptionDidTap: Observable<Int>
+			descriptionDidTap: Observable<Int>,
+			pullToRefresh: Observable<Void>
 		) {
 			self.descriptionDidTap = descriptionDidTap
+			self.pullToRefresh = pullToRefresh
 		}
 	}
 
 	public struct Output {
 		public let listData: Observable<[CellItem]>
+		public let downloadedData: Observable<Void>
 
 		public init(
-			listData: Observable<[CellItem]>
+			listData: Observable<[CellItem]>,
+			downloadedData: Observable<Void>
 		) {
 			self.listData = listData
+			self.downloadedData = downloadedData
 		}
 	}
 }

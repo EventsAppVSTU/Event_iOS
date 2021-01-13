@@ -26,8 +26,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 		globalNavigationController.setNavigationBarHidden(true, animated: false)
 		globalNavigationController.navigationBar.prefersLargeTitles = true
 
+		let makeLoader = {
+			makeChains {
+				Loader.ModifyRequest { $0.headers["Authorization"] = "1 111111_2" }
+				Loader.Print()
+				Loader.URLSession()
+			}
+		}
+
 		let globalContext = GlobalContext(
-			globalNavigationController: globalNavigationController
+			globalNavigationController: globalNavigationController,
+			makeLoader: makeLoader
 		)
 
 		let viewModel = AuthViewModel(globalContext: globalContext)

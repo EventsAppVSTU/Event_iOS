@@ -17,11 +17,6 @@ public protocol HTTPLoading: AnyObject {
 }
 
 public extension HTTPLoading {
-//	var nextLoader: HTTPLoading? {
-//		get { return nil }
-//		set { }
-//	}
-
 	func load(request: HTTP.Request, completionHandlers: [(HTTP.Result) -> Void]) -> HTTP.Task {
 		let task = HTTP.Task(request: request, completionHandlers: completionHandlers)
 		load(task: task)

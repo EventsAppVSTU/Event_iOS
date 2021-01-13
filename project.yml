@@ -15,8 +15,7 @@ settings:
 
 targets:
   Application:
-    # directlyEmbedCarthageDependencies: true
-    templates: [Application, SwiftLint]
+    templates: [Application, ApplicationSwiftLint, Rx]
     sources: 
       - path: Application/Source
         type: Folder
@@ -51,12 +50,6 @@ targets:
 
   Library:
     templates: [Framework, SwiftLint]
-    info:
-      path: Library/Resource/Info.plist
-    settings: 
-      base: 
-        TARGET_PATH: Library
-    sources: Library/Source
     dependencies: 
       - carthage: Kingfisher
       - carthage: Overture
@@ -64,80 +57,46 @@ targets:
       
   NewNetworking:
     templates: [Rx, Framework, SwiftLint]
-    info:
-      path: NewNetworking/Resources/Info.plist
-    settings: 
-      base: 
-        TARGET_PATH: NewNetworking
-    sources: NewNetworking/Sources
 
   Platform:
     templates: [Rx, Framework, SwiftLint]
-    info:
-      path: Platform/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: Platform
-    sources: Platform/Sources
+    dependencies:
+      - target: NewNetworking
 
   AuthScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
-    info:
-      path: AuthScreen/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: AuthScreen
-    sources: AuthScreen/Sources
     dependencies:
       - target: EventsScreen
       - target: RegistrationScreen
+      - target: SettingsScreen
 
   RegistrationScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
-    info:
-      path: RegistrationScreen/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: RegistrationScreen
-    sources: RegistrationScreen/Sources
 
   NewsScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
-    info:
-      path: NewsScreen/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: NewsScreen
-    sources: NewsScreen/Sources
 
   SettingsScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
-    info:
-      path: SettingsScreen/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: SettingsScreen
-    sources: SettingsScreen/Sources
 
   EventsScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
-    info:
-      path: EventsScreen/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: EventsScreen
-    sources: EventsScreen/Sources
+    scheme:
+      testTargets:
+        - EventsScreenTests
     dependencies: 
-      - target: NewNetworking
+      - target: Services
       - target: NewsScreen
+
+  EventsScreenTests:
+    templates: [TestFramework, FileResouces]
 
   DesignEngine:
     templates: [Framework, SwiftLint]
-    info:
-      path: DesignEngine/Resources/Info.plist
-    settings:
-      base:
-        TARGET_PATH: DesignEngine
-    sources: DesignEngine/Sources
     dependencies:
       - carthage: Kingfisher 
+
+  Services:
+    templates: [Rx, Framework, SwiftLint]
+    dependencies:
+      - target: NewNetworking 

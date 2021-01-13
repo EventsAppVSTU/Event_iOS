@@ -18,6 +18,7 @@ public protocol ViewModelTemplate {
     associatedtype Flow: FlowProtocol
     associatedtype Input where Flow.Input == Input
     associatedtype Output where Flow.Output == Output
+
     func transform(input: Input, bag: DisposeBag) -> Output
 }
 
@@ -25,6 +26,7 @@ public protocol ViewControllerTemplate: CancellableContainer {
     associatedtype Flow: FlowProtocol
     associatedtype Input where Flow.Input == Input
     associatedtype Output where Flow.Output == Output
+
     var input: Input { get }
     func bind(output: Output)
 }

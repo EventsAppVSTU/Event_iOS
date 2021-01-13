@@ -14,9 +14,13 @@ import RxSwift
 public class EventsListViewController: BaseViewController<UITableView, EventsListFlow> {
 
 	fileprivate let sharedDescriptionTap = PublishSubject<IndexPath>()
+	fileprivate let pullToRefresh = PublishSubject<Void>()
 	private var dataSource: UITableViewDiffableDataSource<OnceSection, EventsListFlow.CellItem>!
+	private let refreshControl = UIRefreshControl()
 
-	public override func afterInit() {
+	public override init(viewModel: BaseViewModel<EventsListFlow>) {
+		super.init(viewModel: viewModel)
+
 		tabBarItem = UITabBarItem(
 			title: "Events",
 			image: UIImage(systemName: "square.and.arrow.down"),
@@ -24,11 +28,19 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 		)
 
 		navigationItem.title = "Today"
+
+		refreshControl.addTarget(self, action: #selector(pullToRefreshHandler), for: .valueChanged)
+		tableView.refreshControl = refreshControl
+	}
+
+	required init?(coder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
 	}
 
 	public override var input: Input {
 		return Input(
-			descriptionDidTap: sharedDescriptionTap.map { $0.row }.asObservable()
+			descriptionDidTap: sharedDescriptionTap.map { $0.row }.asObservable(),
+			pullToRefresh: pullToRefresh.asObserver()
 		)
 	}
 
@@ -46,6 +58,13 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 			.subscribe(
 				onNext: unowned(dataSource) { $0.apply($1) }
 			)
+			.disposed(by: bag)
+
+		output.downloadedData
+			.observe(on: MainScheduler.instance)
+			.subscribe(onNext: { [weak refreshControl] in
+				refreshControl?.endRefreshing()
+			})
 			.disposed(by: bag)
 	}
 
@@ -75,6 +94,12 @@ public class EventsListViewController: BaseViewController<UITableView, EventsLis
 
 			return cell
 		}
+	}
+}
+
+extension EventsListViewController {
+	@objc func pullToRefreshHandler() {
+		pullToRefresh.on()
 	}
 }
 

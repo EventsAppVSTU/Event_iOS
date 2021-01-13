@@ -6,11 +6,17 @@
 //
 
 import UIKit
+import NewNetworking
 
 public class GlobalContext {
 	public let globalNavigationController: UINavigationController
+	public let makeLoader: () -> HTTPLoading
 
-	public init(globalNavigationController: UINavigationController) {
+	public init(
+		globalNavigationController: UINavigationController,
+		makeLoader: @escaping () -> HTTPLoading
+	) {
 		self.globalNavigationController = globalNavigationController
+		self.makeLoader = makeLoader
 	}
 }

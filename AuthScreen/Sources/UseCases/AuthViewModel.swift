@@ -9,7 +9,7 @@
 import RxSwift
 import Library
 import Platform
-import UIKit
+import DesignEngine
 import RegistrationScreen
 
 public extension AuthViewModel {

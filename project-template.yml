@@ -16,8 +16,42 @@ targetTemplates:
   SwiftLint:
     prebuildScripts: &prebuildScripts
       - script: |
+          mint run swiftlint swiftlint --path ${TARGET_PATH}/Sources  --config ${SRCROOT}/.swiftlint.yml
+        name: SwiftLint
+
+  ApplicationSwiftLint:
+    prebuildScripts: &prebuildScripts
+      - script: |
           mint run swiftlint swiftlint --path ${TARGET_PATH}  --config ${SRCROOT}/.swiftlint.yml
         name: SwiftLint
+
+  TestFramework:
+    type: bundle.unit-test
+    platform: iOS
+    settings:
+      base:
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Application.app/Application"
+        TARGET_PATH: ${target_name}
+    info:
+      path: ${target_name}/Resources/Info.plist
+    deploymentTarget:
+      iOS: 13.0
+    sources: 
+        - ${target_name}/Sources
+        - path: ${target_name}/Resources
+          type: folder
+          buildPhase: none
+    dependencies: &dependencies
+      - carthage: RxSwift
+        embed: false
+      - carthage: RxRelay
+        embed: false
+      - carthage: KeychainAccess
+        embed: false
+      - carthage: Overture
+        embed: false
+      - carthage: Kingfisher
+        embed: false
 
   Framework:
     type: framework
@@ -26,18 +60,38 @@ targetTemplates:
       iOS: 13.0
     base:
         TARGETED_DEVICE_FAMILY: 1
+    settings:
+      base:
+        TARGET_PATH: ${target_name}
+    info:
+      path: ${target_name}/Resources/Info.plist
     scheme:
       gatherCoverageData: true
+    sources: 
+        - ${target_name}/Sources
+        - path: ${target_name}/Resources
+          type: folder
+          buildPhase: none
 
   ScreenFramework:
     type: framework
     platform: iOS
     deploymentTarget:
       iOS: 13.0
+    settings:
+      base:
+        TARGET_PATH: ${target_name}
+    info:
+      path: ${target_name}/Resources/Info.plist
     base:
         TARGETED_DEVICE_FAMILY: 1
     scheme:
       gatherCoverageData: true
+    sources: 
+        - ${target_name}/Sources
+        - path: ${target_name}/Resources
+          type: folder
+          buildPhase: none
     dependencies: &dependencies
       - carthage: RxSwift
       - carthage: RxRelay
@@ -50,6 +104,16 @@ targetTemplates:
       - carthage: RxSwift
       - carthage: RxRelay
 
+  FileResouces:
+    sources: &sources
+      - path: ${target_name}/FileResources
+        type: folder
+        includes: 
+          - "*"
+        optional: true
+        buildPhase: 
+          copyFiles:
+            destination: resources
 
   Extension:
     type: app-extension

@@ -9,11 +9,16 @@ import Foundation
 import RxSwift
 
 public extension HTTPLoading {
-	func load(request: HTTP.Request) -> Observable<HTTP.Result> {
-		.create { (observer: AnyObserver<HTTP.Result>) -> Disposable in
+	func load(request: HTTP.Request) -> Observable<HTTP.Response> {
+		.create { (observer: AnyObserver<HTTP.Response>) -> Disposable in
 			let task = HTTP.Task(request: request) {
-				observer.onNext($0)
-				observer.onCompleted()
+				switch $0 {
+				case .success(let response):
+					observer.onNext(response)
+					observer.onCompleted()
+				case .failure(let error):
+					observer.onError(error)
+				}
 			}
 
 			self.load(task: task)

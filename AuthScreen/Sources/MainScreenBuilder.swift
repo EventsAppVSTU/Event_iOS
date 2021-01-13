@@ -9,6 +9,8 @@ import Platform
 import DesignEngine
 import EventsScreen
 import SettingsScreen
+import Services
+import NewNetworking
 
 func getMainScreen(context: GlobalContext) -> UIViewController {
 	let mainViewController = UITabBarController()
@@ -23,7 +25,10 @@ func getMainScreen(context: GlobalContext) -> UIViewController {
 }
 
 func getEventsListScreen(context: GlobalContext) -> UIViewController {
-	let viewModel = EventsListViewModel(globalContext: context)
+	let viewModel = EventsListViewModel(
+		router: NewsScreenRouter(navigationController: context.globalNavigationController),
+		service: EventsService(loader: context.makeLoader)
+	)
 	let screen = EventsListViewController(viewModel: viewModel)
 
 	let eventNavigationController = UINavigationController(rootViewController: screen)

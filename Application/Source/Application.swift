@@ -9,7 +9,7 @@ import UIKit
 
 @main struct Application {
 	static func main() throws {
-		autoreleasepool {
+		_ = autoreleasepool {
 			UIApplicationMain(
 				CommandLine.argc,
 				CommandLine.unsafeArgv,
