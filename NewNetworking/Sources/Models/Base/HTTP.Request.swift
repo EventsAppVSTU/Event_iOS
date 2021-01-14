@@ -30,6 +30,19 @@ public extension HTTP {
 				return nil
 			}
 		}
+
+        public init?(
+            baseUrl: String,
+            path: String,
+            params: [String: String]? = nil
+        ) {
+            guard var urlComponent = URLComponents(string: baseUrl) else { return nil }
+
+            urlComponent.path = path
+            urlComponent.queryItems = params?.map { URLQueryItem(name: $0, value: $1) }
+
+            self.urlComponents = urlComponent
+        }
 	}
 }
 

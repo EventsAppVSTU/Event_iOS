@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import AppFoundation
 import RxSwift
 
-open class BaseViewController<View: UIView, Flow: FlowProtocol>: ContentViewController<View>,
-	CancellableContainer,
-	ViewControllerTemplate {
+open class BaseViewController
+<View: UIView, Flow: FlowProtocol>
+: ContentViewController<View>, CancellableContainer, ViewControllerTemplate
+{
 	public typealias Input = Flow.Input
 	public typealias Output = Flow.Output
 	public typealias Flow = Flow

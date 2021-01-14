@@ -7,7 +7,7 @@
 //
 
 import RxSwift
-import Library
+import AppFoundation
 import Platform
 import DesignEngine
 import RegistrationScreen

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Library
+import AppFoundation
 import Platform
 import RxSwift
 

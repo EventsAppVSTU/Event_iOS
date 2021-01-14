@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Library
+import AppFoundation
 
 public class NewsView: UIView {
 

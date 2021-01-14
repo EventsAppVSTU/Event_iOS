@@ -9,21 +9,22 @@ targetTemplates:
     scheme:
       gatherCoverageData: true
     dependencies:
-      - carthage: RxSwift
-      - carthage: RxRelay
+      - framework: Carthage/Build/RxSwift.xcframework
+      - framework: Carthage/Build/RxRelay.xcframework
 
 
   SwiftLint:
     prebuildScripts: &prebuildScripts
-      - script: |
-          mint run swiftlint swiftlint --path ${TARGET_PATH}/Sources  --config ${SRCROOT}/.swiftlint.yml
-        name: SwiftLint
+      # - script: |
+      #     #!/bin/zsh
+      #     mint run swiftlint swiftlint --path ${TARGET_PATH}/Sources  --config ${SRCROOT}/.swiftlint.yml
+      #   name: SwiftLint
 
   ApplicationSwiftLint:
     prebuildScripts: &prebuildScripts
-      - script: |
-          mint run swiftlint swiftlint --path ${TARGET_PATH}  --config ${SRCROOT}/.swiftlint.yml
-        name: SwiftLint
+      # - script: |
+      #     mint run swiftlint swiftlint --path ${TARGET_PATH}  --config ${SRCROOT}/.swiftlint.yml
+      #   name: SwiftLint
 
   TestFramework:
     type: bundle.unit-test
@@ -42,15 +43,15 @@ targetTemplates:
           type: folder
           buildPhase: none
     dependencies: &dependencies
-      - carthage: RxSwift
+      - framework: Carthage/Build/RxSwift.xcframework
         embed: false
-      - carthage: RxRelay
+      - framework: Carthage/Build/RxRelay.xcframework
         embed: false
-      - carthage: KeychainAccess
+      - framework: Carthage/Build/KeychainAccess.xcframework
         embed: false
-      - carthage: Overture
+      - framework: Carthage/Build/Overture.xcframework
         embed: false
-      - carthage: Kingfisher
+      - framework: Carthage/Build/Kingfisher.xcframework
         embed: false
 
   Framework:
@@ -93,16 +94,16 @@ targetTemplates:
           type: folder
           buildPhase: none
     dependencies: &dependencies
-      - carthage: RxSwift
-      - carthage: RxRelay
+      - framework: Carthage/Build/RxSwift.xcframework
+      - framework: Carthage/Build/RxRelay.xcframework
       - target: Platform
-      - target: Library
+      - target: AppFoundation
       - target: DesignEngine
 
   Rx:
     dependencies: &dependencies
-      - carthage: RxSwift
-      - carthage: RxRelay
+      - framework: Carthage/Build/RxSwift.xcframework
+      - framework: Carthage/Build/RxRelay.xcframework
 
   FileResouces:
     sources: &sources

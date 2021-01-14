@@ -8,7 +8,7 @@
 
 import DesignEngine
 import Overture
-import Library
+import AppFoundation
 
 public class SettingsView: UIView {
 

@@ -6,7 +6,7 @@
 //
 
 import UIKit
-import Library
+import AppFoundation
 
 internal class NewsContentView: UIView {
 

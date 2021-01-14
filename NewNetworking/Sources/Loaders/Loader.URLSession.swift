@@ -72,6 +72,10 @@ private extension Loader.URLSession {
 			let result: HTTP.Result
 			var httpResponse: HTTP.Response?
 
+            print(
+                data.flatMap { String(data: $0, encoding: .utf8) }
+            )
+
 			if let httpNativeResponse = response as? HTTPURLResponse {
 				httpResponse = HTTP.Response(
 					request: task.request,

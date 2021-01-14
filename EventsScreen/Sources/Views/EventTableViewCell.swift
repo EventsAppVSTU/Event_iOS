@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Library
+import AppFoundation
 import RxSwift
 
 class EventTableViewCell: UITableViewCell {

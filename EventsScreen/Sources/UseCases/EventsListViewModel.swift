@@ -6,7 +6,7 @@
 //
 
 import DesignEngine
-import Library
+import AppFoundation
 import RxSwift
 import Platform
 import NewsScreen
@@ -32,7 +32,7 @@ public class EventsListViewModel: BaseViewModel<EventsListFlow> {
 		input.descriptionDidTap
 			.observe(on: ConcurrentDispatchQueueScheduler(queue: .global(qos: .utility)))
 			.compactMap { [unowned self] index in
-				try? self.downloadedListData.value()[index]
+				try? self.downloadedListData.value()[safe: index]
 			}
 			.map(NewsFlow.Article.init)
 			.subscribe { [router] instance in

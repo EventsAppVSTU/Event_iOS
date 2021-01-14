@@ -17,6 +17,6 @@ mint bootstrap
 
 export XCODE_XCCONFIG_FILE="$xcconfig"
 
-mint run Carthage carthage update --platform iOS --no-use-binaries --cache-builds "$@"
+mint run Carthage carthage update --platform iOS --no-use-binaries --use-xcframeworks --cache-builds "$@"
 mint run xcodegen xcodegen generate
 open Events.xcodeproj

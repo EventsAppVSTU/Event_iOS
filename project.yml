@@ -3,7 +3,7 @@ include: project-template.yml
 name: Events
 
 options:
-  bundleIdPrefix: com.skw883halhag2.kh82hk
+  bundleIdPrefix: mx.metalluxx
   deploymentTarget:
     iOS: "13.0"
   transitivelyLinkDependencies: true
@@ -40,20 +40,20 @@ targets:
         TARGETED_DEVICE_FAMILY: 1
 
     dependencies:
-      - target: Library
+      - target: AppFoundation
       - target: NewNetworking
       - target: AuthScreen
       - target: Platform
-      - carthage: Kingfisher
-      - carthage: Overture
-      - carthage: KeychainAccess
+      - framework: Carthage/Build/Kingfisher.xcframework
+      - framework: Carthage/Build/Overture.xcframework
+      - framework: Carthage/Build/KeychainAccess.xcframework
 
-  Library:
+  AppFoundation:
     templates: [Framework, SwiftLint]
     dependencies: 
-      - carthage: Kingfisher
-      - carthage: Overture
-      - carthage: KeychainAccess
+      - framework: Carthage/Build/Kingfisher.xcframework
+      - framework: Carthage/Build/Overture.xcframework
+      - framework: Carthage/Build/KeychainAccess.xcframework
       
   NewNetworking:
     templates: [Rx, Framework, SwiftLint]
@@ -62,6 +62,7 @@ targets:
     templates: [Rx, Framework, SwiftLint]
     dependencies:
       - target: NewNetworking
+      - target: AppFoundation
 
   AuthScreen:
     templates: [ScreenFramework, Rx, SwiftLint]
@@ -94,7 +95,7 @@ targets:
   DesignEngine:
     templates: [Framework, SwiftLint]
     dependencies:
-      - carthage: Kingfisher 
+      - framework: Carthage/Build/Kingfisher.xcframework 
 
   Services:
     templates: [Rx, Framework, SwiftLint]

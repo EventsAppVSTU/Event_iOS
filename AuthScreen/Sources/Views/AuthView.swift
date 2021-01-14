@@ -7,7 +7,7 @@
 //
 
 import DesignEngine
-import Library
+import AppFoundation
 import Overture
 
 public class AuthView: UIView {

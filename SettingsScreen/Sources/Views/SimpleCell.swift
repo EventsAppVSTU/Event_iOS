@@ -7,7 +7,7 @@
 //
 
 import DesignEngine
-import Library
+import AppFoundation
 
 public struct SimpleCellItem: Hashable {
 	public let title: String
