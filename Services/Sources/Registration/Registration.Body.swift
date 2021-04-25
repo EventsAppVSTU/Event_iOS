@@ -2,50 +2,38 @@
 //  Registration.Body.swift
 //  Services
 //
-//  Created by Metalluxx on 18.04.2021.
+//  Created by Metalluxx on 25.04.2021.
 //
 
 import Foundation
 import AppFoundation
 
-public extension Registration {
-    struct Body: Encodable {
-        public var name: String
-        public var surname: String
-        public var image: Data?
-        public var organizationId: Null<String>
-        public var organizationVerify: Int
-        public var currentEvent: Null<String>
-        public var login: String
-        public var password: String
+extension Registration {
+    public typealias RequestBody = BodyContainer<UserDataBody, NestedRequestBody>
+
+    public struct NestedRequestBody: Encodable {
         public var phone: String
         public var webLink: String
         public var bio: String
+        public var organizationVerify: IntFromString
 
         public init(
-            name: String,
-            surname: String,
-            image: Data = .init(),
-            organizationId: Null<String> = .init(),
-            organizationVerify: Int,
-            currentEvent: Null<String> = .init(),
-            login: String,
-            password: String,
             phone: String,
             webLink: String,
-            bio: String
+            bio: String,
+            organizationVerify: IntFromString
         ) {
-            self.name = name
-            self.surname = surname
-            self.image = image
-            self.organizationId = organizationId
-            self.organizationVerify = organizationVerify
-            self.currentEvent = currentEvent
-            self.login = login
-            self.password = password
             self.phone = phone
             self.webLink = webLink
             self.bio = bio
+            self.organizationVerify = organizationVerify
         }
     }
 }
+
+public extension Registration.NestedRequestBody {
+    var organizationVerifyId: Int {
+        organizationVerify.value
+    }
+}
+

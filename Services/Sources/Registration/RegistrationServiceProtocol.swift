@@ -8,5 +8,5 @@
 import RxSwift
 
 public protocol RegistrationServiceProtocol {
-    func sendRegistrationRequest(_ body: Registration.Body) -> Observable<Registration.ResponseBody>
+    func sendRegistrationRequest(_ body: Registration.RequestBody) -> Observable<Registration.ResponseBody>
 }

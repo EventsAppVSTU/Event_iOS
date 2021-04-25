@@ -54,32 +54,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         let globalContext = GlobalContextFactory.make(navigationController: globalNavigationController)
 
-        let body = Registration.Body(
-            name: "Шпек",
-            surname: "Африканский",
-            organizationVerify: 20,
-            login: "Shpecks1",
-            password: "Lalala333",
-            phone: "89999999999",
-            webLink: "www.google.com",
-            bio: "AHAHAHHAHAHHA"
-        )
+//        let body = Registration.RequestBody(
+//            required: .init(
+//                name: "Antonio",
+//                surname: "Banderas",
+//                login: "Chilintano2",
+//                password: "Pasta233"
+//            ),
+//            optional: .init(
+//                phone: "89999999999",
+//                webLink: "www.swift.org",
+//                bio: "AHAHAHHAHA",
+//                organizationVerify: 20
+//            )
+//        )
 
 
-        print((try? globalContext.encoder.encode(body)).flatMap { String.init(data: $0, encoding: .utf8) })
+//        let s = Services.Registration.Service(
+//            loader: globalContext.makeLoader,
+//            baseURL: "http://www.yaem.store/",
+//            decoder: globalContext.decoder,
+//            encoder: globalContext.encoder
+//        )
+//        .sendRegistrationRequest(body)
+//        .share()
+//        .subscribe {
+//            print($0)
+//        }
 
-
-        let s = Services.Registration.Service(
+        let k = Services.Authorization.Service(
             loader: globalContext.makeLoader,
             baseURL: "http://www.yaem.store/",
             decoder: globalContext.decoder,
             encoder: globalContext.encoder
         )
-        .sendRegistrationRequest(body)
+        .authorize(.init(login: "Chilintano2", password: "Pasta233"))
         .share()
-        .subscribe {
-            print($0)
-        }
+        .subscribe { print($0) }
 
 		let viewModel = AuthViewModel(globalContext: globalContext)
 		let viewController = AuthViewController(viewModel: viewModel)

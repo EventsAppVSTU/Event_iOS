@@ -1,15 +1,16 @@
 //
-//  RegistrationService.swift
+//  AuthorizationService.swift
 //  Services
 //
-//  Created by Metalluxx on 18.04.2021.
+//  Created by Metalluxx on 26.04.2021.
 //
 
 import Foundation
-import RxSwift
+import AppFoundation
 import NewNetworking
+import RxSwift
 
-extension Registration {
+extension Authorization {
     public class Service {
         private let loader: () -> HTTPLoading
         private let baseURL: String
@@ -30,19 +31,19 @@ extension Registration {
     }
 }
 
-extension Registration.Service: RegistrationServiceProtocol {
-    public func sendRegistrationRequest(_ body: Registration.RequestBody) -> Observable<Registration.ResponseBody> {
+extension Authorization.Service: AuthorizationServiceProtocol {
+    public func authorize(
+        _ credentials: Authorization.Credentials
+    ) -> Observable<Authorization.ResponseBody> {
         HTTP.Request(
             baseUrl: baseURL,
-            path: "/robo/users/userCredentals.php"
+            path: "/robo/users/userCredentals.php",
+            params: credentials.toDictionary()
         )
         .do {
-            $0.method = .post
-            $0.body = Body.JSON(body, encoder: encoder)
+            $0.method = .get
         }
-        .toObservable(
-            error: ServiceErrors.invalidUrl
-        )
+        .toObservable(error: ServiceErrors.invalidUrl)
         .debug()
         .flatMap { [loader] in
             loader().load(request: $0)
@@ -50,11 +51,20 @@ extension Registration.Service: RegistrationServiceProtocol {
         .compactMap(\.body)
         .map { [decoder] in
             try decoder.decode(
-                StatusResponseDTO<[Registration.ResponseBody]>.self,
+                StatusResponseDTO<[Authorization.ResponseBody]>.self,
                 from: $0
             )
         }
         .map(\.data.objects?.first)
         .compactMap { $0 }
+    }
+}
+
+private extension Authorization.Credentials {
+    func toDictionary() -> [String: String] {
+        [
+            "login": login,
+            "password": password
+        ]
     }
 }

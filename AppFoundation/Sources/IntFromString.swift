@@ -1,29 +1,37 @@
 //
-//  ResponseInt.swift
-//  Services
+//  IntFromString.swift
+//  AppFoundation
 //
-//  Created by Metalluxx on 18.04.2021.
+//  Created by Metalluxx on 25.04.2021.
 //
 
-import AppFoundation
+import Foundation
 
-enum ResponseIntErrors: Error {
+public enum ResponseIntErrors: Error {
     case cannotConvertToInt(CodingKey)
     case cannotConvertToIntFromSingleContainer
 }
 
-struct IntFromString {
-    let value: Int
+public struct IntFromString {
+    public let value: Int
 
-    init(_ value: Int) {
+    public init(_ value: Int) {
+        self.value = value
+    }
+}
+
+extension IntFromString: ExpressibleByIntegerLiteral {
+    public typealias IntegerLiteralType = Int
+    
+    public init(integerLiteral value: Int) {
         self.value = value
     }
 }
 
 extension IntFromString: Decodable {
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let stringValue = try decoder.singleValueContainer().decode(String.self)
-        
+
         self.value = try Int(stringValue)
             .or(
                 DecodingError.typeMismatch(
@@ -35,7 +43,7 @@ extension IntFromString: Decodable {
 }
 
 extension IntFromString: Encodable {
-    func encode(to encoder: Encoder) throws {
+    public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
         try container.encode("\(value)")

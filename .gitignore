@@ -103,3 +103,4 @@ iOSInjectionProject/
 Carthage/
 Events.xcodeproj/
 Cartfile.resolved
+.DS_Store

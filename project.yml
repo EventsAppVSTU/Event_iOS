@@ -3,7 +3,7 @@ include: project-template.yml
 name: Events
 
 options:
-  bundleIdPrefix: mx.metalluxx
+  bundleIdPrefix: mx.metalluxxproject
   deploymentTarget:
     iOS: "13.0"
   transitivelyLinkDependencies: true
@@ -32,10 +32,6 @@ targets:
         UILaunchStoryboardName: LaunchScreen
     settings:
       base:
-        CODE_SIGN_STYLE: Manual
-        DEVELOPMENT_TEAM: N3394Z6629
-        CODE_SIGN_IDENTITY: iPhone Developer
-        PROVISIONING_PROFILE_SPECIFIER: 
         TARGET_PATH: Application
         TARGETED_DEVICE_FAMILY: 1
 

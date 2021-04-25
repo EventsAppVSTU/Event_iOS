@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Null<T> where T: Codable {
+public struct Null<T> {
     public let value: T?
 
     public init(_ value: T? = nil) {
@@ -15,23 +15,29 @@ public struct Null<T> where T: Codable {
     }
 }
 
-extension Null: Encodable {
+extension Null: ExpressibleByNilLiteral {
+    public init(nilLiteral: ()) {
+        self.value = nil
+    }
+}
+
+extension Null: Encodable where T: Encodable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
 
         if let value = value {
             try container.encode(value)
         } else {
-            try container.encode("null")
+            try container.encodeNil()
         }
     }
 }
 
-extension Null: Decodable {
+extension Null: Decodable where T: Decodable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
 
-        if let stringValue = try? container.decode(String.self), stringValue == "null" {
+        if container.decodeNil() {
             value = nil
         } else if let value = try? container.decode(T.self) {
             self.value = value
